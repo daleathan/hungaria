@@ -371,7 +371,38 @@ class HungariaReport(Report):
 		return events
 	
 	def getEventLink(self, event, lang):
-		output = '<div>' + l(str(event.get_type()).lower(), lang) + '</div>'
+		output = '<div>' + l(str(event.get_type()).lower(), lang) + ': ' + self.getEventDate(event)
+		if self.getPlaceLink(self.getEventPlace(event)):
+			output = output + ' (' + self.getPlaceLink(self.getEventPlace(event)) + ')'
+		output = output + '</div>'
+		return output
+	
+	def getEventDate(self, event):
+		date = self.getEventYear(event) + '-' + self.getEventMonth(event) + '-' + self.getEventDay(event)
+		return date
+	
+	def getEventYear(self, event):
+		return str(event.get_date_object().get_start_date()[2])
+	
+	def getEventMonth(self, event):
+		if event.get_date_object().get_start_date()[1] < 10:
+			return '0' + str(event.get_date_object().get_start_date()[1])
+		return str(event.get_date_object().get_start_date()[1])
+	
+	def getEventDay(self, event):
+		if event.get_date_object().get_start_date()[0] < 10:
+			return '0' + str(event.get_date_object().get_start_date()[0])
+		return str(event.get_date_object().get_start_date()[0])
+	
+	def getEventPlace(self, event):
+		place = self.db.get_place_from_handle(event.get_place_handle())
+		return place
+	
+	def getPlaceLink(self, place):
+		try:
+			output = place.get_title()
+		except AttributeError:
+			output = ""
 		return output
 	
 	def get_birthdate(self, person):
