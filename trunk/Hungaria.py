@@ -197,7 +197,14 @@ class HungariaReport(Report):
 			
 			output = output + '</td></tr>'
 			
+			output = output + '<tr><td class="label">'
+			output = output + l('events', lang)+':'
+			output = output + '</td><td class="field">'
 			
+			for event in self.getEvents(person):
+				output = output + self.getEventLink(event, lang)
+			
+			output = output + '</td></tr>'
 			
 			#output = output + '<tr><td class="label">'
 			#output = output + l('birth', lang)+':'
@@ -346,6 +353,26 @@ class HungariaReport(Report):
 	
 	# ---------------------------------------- PERSON AND FAMILY RELATED FUNCTIONS BEGIN
 	
+	
+	def getEvents(self, person):
+		eventrefs = person.get_event_ref_list()
+		events = []
+		for eventref in eventrefs:
+			events.append(self.db.get_event_from_handle(eventref.ref))
+		return events
+	
+	
+	def getEventsByType(self, person, type):
+		eventrefs = person.get_event_ref_list()
+		events = []
+		for eventref in eventrefs:
+			if self.db.get_event_from_handle(eventref.ref).get_type() == 'Birth':
+				events.append(self.db.get_event_from_handle(eventref.ref).get_type())
+		return events
+	
+	def getEventLink(self, event, lang):
+		output = '<div>' + l(str(event.get_type()).lower(), lang) + '</div>'
+		return output
 	
 	def get_birthdate(self, person):
 		birth = ''
@@ -1423,6 +1450,85 @@ label['female'][sr] = "женско"
 label['female'][sv] = "kvinna"
 label['female'][fi] = "nainen"
 label['female'][zh] = "女性"
+
+label['birth'] = {}
+label['birth'][bg] = "Роден"
+label['birth'][cs] = "Narozený"
+label['birth'][da] = "Født"
+label['birth'][de] = "Geboren"
+label['birth'][el] = "Γεννημένος"
+label['birth'][en] = "Born"
+label['birth'][es] = "Nacido"
+label['birth'][fr] = "Né"
+label['birth'][ko] = "타고난"
+label['birth'][hi] = "जन्म लेना"
+label['birth'][hr] = "Roditi se"
+label['birth'][it] = "Nato"
+label['birth'][hu] = "Született"
+label['birth'][ja] = "生まれつきの"
+label['birth'][nl] = "Geboren"
+label['birth'][no] = "Født"
+label['birth'][pl] = "Urodzony"
+label['birth'][pt] = "Nascer"
+label['birth'][ro] = "Născut"
+label['birth'][ru] = "Родился"
+label['birth'][sr] = "Роди се"
+label['birth'][sv] = "Född"
+label['birth'][fi] = "Syntynyt"
+label['birth'][zh] = "天生的"
+
+label['death'] = {}
+label['death'][bg] = "Починал"
+label['death'][cs] = "Zemřel"
+label['death'][da] = "Døde"
+label['death'][de] = "Gestorben"
+label['death'][el] = "Πέθανε"
+label['death'][en] = "Died"
+label['death'][es] = "Murió"
+label['death'][fr] = "Mort"
+label['death'][ko] = "사망"
+label['death'][hi] = "मर गया"
+label['death'][hr] = "Umro"
+label['death'][it] = "Morto"
+label['death'][hu] = "Elhalálozott"
+label['death'][ja] = "死亡"
+label['death'][nl] = "Overleden"
+label['death'][no] = "Døde"
+label['death'][pl] = "Zmarł"
+label['death'][pt] = "Faleceu"
+label['death'][ro] = "A murit"
+label['death'][ru] = "Умер"
+label['death'][sr] = "Умро"
+label['death'][sv] = "Dog"
+label['death'][fi] = "Kuoli"
+label['death'][zh] = "死亡"
+
+label['events'] = {}
+label['events'][bg] = "Събития"
+label['events'][cs] = "Události"
+label['events'][da] = "Begivenheder"
+label['events'][de] = "Veranstaltungen"
+label['events'][el] = "Εκδηλώσεις"
+label['events'][en] = "Events"
+label['events'][es] = "Eventos"
+label['events'][fr] = "Evénements"
+label['events'][ko] = "이벤트"
+label['events'][hi] = "घटनाएँ"
+label['events'][hr] = "Događanja"
+label['events'][it] = "Eventi"
+label['events'][hu] = "Események"
+label['events'][ja] = "イベント"
+label['events'][nl] = "Evenementen"
+label['events'][no] = "Arrangementer"
+label['events'][pl] = "Wydarzenia"
+label['events'][pt] = "Eventos"
+label['events'][ro] = "Evenimente"
+label['events'][ru] = "События"
+label['events'][sr] = "Догађања"
+label['events'][sv] = "Evenemang"
+label['events'][fi] = "Tapahtumat"
+label['events'][zh] = "活动"
+
 
 temp[bg] = ""
 temp[cs] = ""
