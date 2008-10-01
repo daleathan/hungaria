@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Hungaria - a website generator for GRAMPS
+# Hungária - a website generator for GRAMPS
 #
 # Copyright (C) 2008       AGGOTT HÖNSCH István <istvan@aggotthonsch.com>
 #
@@ -20,7 +20,7 @@
 #
 
 """
-Hungaria Web Page generator.
+Hungária - a website generator for GRAMPS
 """
 
 # python modules
@@ -49,12 +49,13 @@ import gen.lib
 import const
 from GrampsCfg import get_researcher
 import Sort
-from PluginUtils import (register_report, FilterOption, EnumeratedListOption,
-												PersonOption, BooleanOption, NumberOption,
-												StringOption, DestinationOption, NoteOption,
-												MediaOption)
-from ReportBase import (Report, ReportUtils, MenuReportOptions, CATEGORY_WEB,
-												MODE_GUI, MODE_CLI, Bibliography)
+from PluginUtils import (register_report, FilterOption,
+						EnumeratedListOption, PersonOption,
+						BooleanOption, NumberOption,
+						StringOption, DestinationOption, NoteOption,
+						MediaOption)
+from ReportBase import (Report, ReportUtils, MenuReportOptions,
+						CATEGORY_WEB, MODE_GUI, MODE_CLI, Bibliography)
 import Utils
 import ThumbNails
 import ImgManip
@@ -68,11 +69,15 @@ from gen.lib.eventroletype import EventRoleType
 
 
 
-def l(name, lang):
+def gl(name, lang):
+	"""returns label in specified language"""
 	return label[name][lang]
 
 # HungariaReport
 class HungariaReport(Report):
+	"""Report class expected by GRAMPS."""
+	
+	
 	def __init__(self, database, options):
 		
 		Report.__init__(self, database, options)
@@ -109,7 +114,7 @@ class HungariaReport(Report):
 		self.generateHtmlSplash()
 		
 		for lang in langList:
-			if eval('self.opts[\'lang_'+l('langCode', lang)+'\']'):
+			if eval('self.opts[\'lang_'+gl('langCode', lang)+'\']'):
 				self.generatePersonIndex(lang)
 				self.generatePersonPages(lang)
 				self.blaze()
@@ -153,12 +158,12 @@ class HungariaReport(Report):
 		output = ''
 		output = output + '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><link rel="stylesheet" href="res/css/hungaria.css" type="text/css" media="screen"/><script type="text/javascript" src="res/js/mootools.js"></script><script type="text/javascript" src="res/js/hungaria.js"></script><title>~focusFamily~</title></head><body><div id="splash"><table width="100%" id="splashcenter"><tr><td align="center" valign="middle"><table width="50%"><tr><td align="right" valign="middle"><img src="res/img/hungaria.jpg" width="235" height="400" alt="Hungária" title="Hungária" id="splash_image" /></td><td width="10">&nbsp;</td><td width="50%" align="center" valign="middle">'
 		for lang in langList:
-			if eval('self.opts[\'lang_'+l('langCode', lang)+'\']'):
+			if eval('self.opts[\'lang_'+gl('langCode', lang)+'\']'):
 				if self.opts['websiteTitleBeginsWith'] == 'v':
-					websiteTitle = '<nobr>' + l('websiteTitleV', lang).replace('~', self.opts['focusFamily'])+' [' + l('langCode', lang) + ']</nobr>'
+					websiteTitle = '<nobr>' + gl('websiteTitleV', lang).replace('~', self.opts['focusFamily'])+' [' + gl('langCode', lang) + ']</nobr>'
 				else:
-					websiteTitle = '<nobr>' + l('websiteTitleC', lang).replace('~', self.opts['focusFamily'])+' [' + l('langCode', lang) + ']</nobr>'
-				output = output + '<div class="splashwelcome"><a href="~langCode~/index.html">~websiteTitle~</a></div>'.replace('~langCode~', l('langCode', lang)).replace('~websiteTitle~', websiteTitle)
+					websiteTitle = '<nobr>' + gl('websiteTitleC', lang).replace('~', self.opts['focusFamily'])+' [' + gl('langCode', lang) + ']</nobr>'
+				output = output + '<div class="splashwelcome"><a href="~langCode~/index.html">~websiteTitle~</a></div>'.replace('~langCode~', gl('langCode', lang)).replace('~websiteTitle~', websiteTitle)
 		output = output + '</td></tr></table></td></tr></table></div></body></html>'
 		output = output.replace('~focusFamily~', self.opts['focusFamily'])
 		
@@ -172,7 +177,7 @@ class HungariaReport(Report):
 		for person in self.opts['allPeople']:
 			filename = self.getPersonId(person).upper() + '.html'
 			
-			websiteTitle = self.opts['focusFamily'] + ' - ' + l('persons', lang)
+			websiteTitle = self.opts['focusFamily'] + ' - ' + gl('persons', lang)
 			
 			output = ''
 			
@@ -188,18 +193,18 @@ class HungariaReport(Report):
 			
 			
 			output = output + '<tr><td class="label">'
-			output = output + l('gender', lang)+':'
+			output = output + gl('gender', lang)+':'
 			output = output + '</td><td class="field">'
 			
 			if person.get_gender() == 1:
-				output = output + l('male', lang)
+				output = output + gl('male', lang)
 			if person.get_gender() == 0:
-				output = output + l('female', lang)
+				output = output + gl('female', lang)
 			
 			output = output + '</td></tr>'
 			
 			output = output + '<tr><td class="label">'
-			output = output + l('events', lang)+':'
+			output = output + gl('events', lang)+':'
 			output = output + '</td><td class="field">'
 			
 			for event in self.getEvents(person):
@@ -208,7 +213,7 @@ class HungariaReport(Report):
 			output = output + '</td></tr>'
 			
 			#output = output + '<tr><td class="label">'
-			#output = output + l('birth', lang)+':'
+			#output = output + gl('birth', lang)+':'
 			#output = output + '</td><td class="field">'
 			
 			#output = output + self.getBirthdate(person)
@@ -220,7 +225,7 @@ class HungariaReport(Report):
 			#for parent in self.getParents(person):
 			#	output = output + '<tr><td class="label">'
 			#	if first:
-			#		output = output + l('parents', lang)+':'
+			#		output = output + gl('parents', lang)+':'
 			#	else:
 			#		output = output + '&nbsp;'
 			#	first = False
@@ -237,7 +242,7 @@ class HungariaReport(Report):
 			
 			output = output + self.generateHtmlExtro(lang)
 			
-			self.dumpTextFile(output, os.path.join(self.opts['targetPath'], l('langCode', lang), filename))
+			self.dumpTextFile(output, os.path.join(self.opts['targetPath'], gl('langCode', lang), filename))
 		
 		return
 		
@@ -248,16 +253,16 @@ class HungariaReport(Report):
 		filename = 'index.html'
 		
 		#if self.opts['websiteTitleBeginsWith'] == 'v':
-		#	websiteTitle = l('websiteTitleV', lang).replace('~', self.opts['focusFamily'])
+		#	websiteTitle = gl('websiteTitleV', lang).replace('~', self.opts['focusFamily'])
 		#else:
-		#	websiteTitle = l('websiteTitleC', lang).replace('~', self.opts['focusFamily'])
+		#	websiteTitle = gl('websiteTitleC', lang).replace('~', self.opts['focusFamily'])
 		
-		websiteTitle = self.opts['focusFamily'] + ' - ' + l('persons', lang)
+		websiteTitle = self.opts['focusFamily'] + ' - ' + gl('persons', lang)
 		
 		output = ''
 		output = output + self.generateHtmlIntro(websiteTitle, filename, lang)
 		
-		output = output + '<h2>' + l('persons', lang) + '</h2>'
+		output = output + '<h2>' + gl('persons', lang) + '</h2>'
 		
 		activeSurname = '„Hass, alkoss, gyarapíts: s a haza fényre derűl!”'
 		first = True
@@ -299,7 +304,7 @@ class HungariaReport(Report):
 		
 		output = output + self.generateHtmlExtro(lang)
 		
-		self.dumpTextFile(output, os.path.join(self.opts['targetPath'], l('langCode', lang), filename))
+		self.dumpTextFile(output, os.path.join(self.opts['targetPath'], gl('langCode', lang), filename))
 		
 	
 	
@@ -317,17 +322,17 @@ class HungariaReport(Report):
 		output = output + '<div id="header">'
 		
 		if self.opts['websiteTitleBeginsWith'] == 'v':
-			websiteTitle = l('websiteTitleV', clang).replace('~', self.opts['focusFamily'])
+			websiteTitle = gl('websiteTitleV', clang).replace('~', self.opts['focusFamily'])
 		else:
-			websiteTitle = l('websiteTitleC', clang).replace('~', self.opts['focusFamily'])
+			websiteTitle = gl('websiteTitleC', clang).replace('~', self.opts['focusFamily'])
 		output = output + '<h1>'+websiteTitle+'</h1>'
 		output = output + '<div id="langbar">'
 		
 		count = 0
 		broken = False
 		for lang in langList:
-			if eval('self.opts[\'lang_'+l('langCode', lang)+'\']'):
-				output = output + '<a href="../' + l('langCode', lang) + '/' + filename + '"><img class="lang_icon" src="../res/img/lang_' + l('langCode', lang) + '.gif" width="16" height="11" alt="' + l('langName', lang) + '"  title="' + l('langName', lang) + '"/></a> '
+			if eval('self.opts[\'lang_'+gl('langCode', lang)+'\']'):
+				output = output + '<a href="../' + gl('langCode', lang) + '/' + filename + '"><img class="lang_icon" src="../res/img/lang_' + gl('langCode', lang) + '.gif" width="16" height="11" alt="' + gl('langName', lang) + '"  title="' + gl('langName', lang) + '"/></a> '
 				count = count + 1
 				if count > ((self.countChosenLanguages()/2)-1) and not broken:
 					output = output + '<br/>'
@@ -336,7 +341,7 @@ class HungariaReport(Report):
 		output = output + '<div id="impressumlink"><a href="../impressum.html">H</a></div>'
 		output = output + '</div>'
 		output = output + '<div id="menu">'
-		output = output + '<a href="index.html">[ ' + l('persons', clang) + ' ]</a>'
+		output = output + '<a href="index.html">[ ' + gl('persons', clang) + ' ]</a>'
 		#output = output + '<a href="families.html">[ Families ]</a>'
 		#output = output + '<a href="events.html">[ Events ]</a>'
 		#output = output + '<a href="places.html">[ Places ]</a>'
@@ -372,7 +377,7 @@ class HungariaReport(Report):
 		return events
 	
 	def getEventLink(self, event, lang):
-		output = '<div>' + l(str(event.get_type()).lower(), lang) + ': ' + self.getEventDate(event)
+		output = '<div>' + gl(str(event.get_type()).lower(), lang) + ': ' + self.getEventDate(event)
 		if self.getPlaceLink(self.getEventPlace(event)):
 			output = output + ' (' + self.getPlaceLink(self.getEventPlace(event)) + ')'
 		output = output + '</div>'
@@ -972,7 +977,7 @@ class HungariaReport(Report):
 		count = 0
 		
 		for lang in langList:
-			if eval('self.opts[\'lang_'+l('langCode', lang)+'\']'):
+			if eval('self.opts[\'lang_'+gl('langCode', lang)+'\']'):
 				count = count + 1
 		
 		return count
@@ -1003,8 +1008,8 @@ class HungariaReport(Report):
 		self.mkdir(self.opts['targetPath'], os.path.join('HungariaWeb', 'res/js'))
 		
 		for lang in langList:
-			if eval('self.opts[\'lang_'+l('langCode', lang)+'\']'):
-				self.mkdir(self.opts['targetPath'], os.path.join('HungariaWeb', l('langCode', lang)))
+			if eval('self.opts[\'lang_'+gl('langCode', lang)+'\']'):
+				self.mkdir(self.opts['targetPath'], os.path.join('HungariaWeb', gl('langCode', lang)))
 		
 	
 	def dumpTextFile(self, data, file):
@@ -1043,8 +1048,8 @@ class HungariaReport(Report):
 		self.dumpTextFile(_FILE_CSS_HUNGARIA, filename)
 		
 		for lang in langList:
-			filename = os.path.join(self.opts['targetPath'],'res', 'img', 'lang_' + l('langCode', lang) + '.gif')
-			self.dumpBinaryFile(eval('_FILE_IMAGE_'+l('langCode', lang).upper()), filename)
+			filename = os.path.join(self.opts['targetPath'],'res', 'img', 'lang_' + gl('langCode', lang) + '.gif')
+			self.dumpBinaryFile(eval('_FILE_IMAGE_'+gl('langCode', lang).upper()), filename)
 		
 		filename = os.path.join(self.opts['targetPath'],'res', 'img', 'photo.gif')
 		self.dumpBinaryFile(_FILE_IMAGE_PHOTO, filename)
@@ -1108,13 +1113,13 @@ class HungariaOptions(MenuReportOptions):
 		
 		for lang in langListAsia:
 			
-			lineA = 'lang_'+l('langCode', lang)+' = BooleanOption(\'Generate website in \' + l(\'langName\', '+l('langCode', lang)+')+\'.\', True)'
+			lineA = 'lang_'+gl('langCode', lang)+' = BooleanOption(\'Generate website in \' + gl(\'langName\', '+gl('langCode', lang)+')+\'.\', True)'
 			exec(lineA)
 			
-			lineA = 'lang_'+l('langCode', lang)+'.set_help(_(\'Generate \'+l(\'langName\', '+l('langCode', lang)+')+\' website.\'))'
+			lineA = 'lang_'+gl('langCode', lang)+'.set_help(_(\'Generate \'+gl(\'langName\', '+gl('langCode', lang)+')+\' website.\'))'
 			exec(lineA)
 			
-			lineA = 'menu.add_option(category_name, \'lang_'+l('langCode', lang)+'\', lang_'+l('langCode', lang)+')'
+			lineA = 'menu.add_option(category_name, \'lang_'+gl('langCode', lang)+'\', lang_'+gl('langCode', lang)+')'
 			exec(lineA)
 			
 			
@@ -1128,13 +1133,13 @@ class HungariaOptions(MenuReportOptions):
 		
 		for lang in langListEastEurope:
 			
-			lineA = 'lang_'+l('langCode', lang)+' = BooleanOption(\'Generate website in \' + l(\'langName\', '+l('langCode', lang)+')+\'.\', True)'
+			lineA = 'lang_'+gl('langCode', lang)+' = BooleanOption(\'Generate website in \' + gl(\'langName\', '+gl('langCode', lang)+')+\'.\', True)'
 			exec(lineA)
 			
-			lineA = 'lang_'+l('langCode', lang)+'.set_help(_(\'Generate \'+l(\'langName\', '+l('langCode', lang)+')+\' website.\'))'
+			lineA = 'lang_'+gl('langCode', lang)+'.set_help(_(\'Generate \'+gl(\'langName\', '+gl('langCode', lang)+')+\' website.\'))'
 			exec(lineA)
 			
-			lineA = 'menu.add_option(category_name, \'lang_'+l('langCode', lang)+'\', lang_'+l('langCode', lang)+')'
+			lineA = 'menu.add_option(category_name, \'lang_'+gl('langCode', lang)+'\', lang_'+gl('langCode', lang)+')'
 			exec(lineA)
 			
 			
@@ -1148,13 +1153,13 @@ class HungariaOptions(MenuReportOptions):
 		
 		for lang in langListNorthEurope:
 			
-			lineA = 'lang_'+l('langCode', lang)+' = BooleanOption(\'Generate website in \' + l(\'langName\', '+l('langCode', lang)+')+\'.\', True)'
+			lineA = 'lang_'+gl('langCode', lang)+' = BooleanOption(\'Generate website in \' + gl(\'langName\', '+gl('langCode', lang)+')+\'.\', True)'
 			exec(lineA)
 			
-			lineA = 'lang_'+l('langCode', lang)+'.set_help(_(\'Generate \'+l(\'langName\', '+l('langCode', lang)+')+\' website.\'))'
+			lineA = 'lang_'+gl('langCode', lang)+'.set_help(_(\'Generate \'+gl(\'langName\', '+gl('langCode', lang)+')+\' website.\'))'
 			exec(lineA)
 			
-			lineA = 'menu.add_option(category_name, \'lang_'+l('langCode', lang)+'\', lang_'+l('langCode', lang)+')'
+			lineA = 'menu.add_option(category_name, \'lang_'+gl('langCode', lang)+'\', lang_'+gl('langCode', lang)+')'
 			exec(lineA)
 			
 			
@@ -1168,13 +1173,13 @@ class HungariaOptions(MenuReportOptions):
 		
 		for lang in langListWestEurope:
 			
-			lineA = 'lang_'+l('langCode', lang)+' = BooleanOption(\'Generate website in \' + l(\'langName\', '+l('langCode', lang)+')+\'.\', True)'
+			lineA = 'lang_'+gl('langCode', lang)+' = BooleanOption(\'Generate website in \' + gl(\'langName\', '+gl('langCode', lang)+')+\'.\', True)'
 			exec(lineA)
 			
-			lineA = 'lang_'+l('langCode', lang)+'.set_help(_(\'Generate \'+l(\'langName\', '+l('langCode', lang)+')+\' website.\'))'
+			lineA = 'lang_'+gl('langCode', lang)+'.set_help(_(\'Generate \'+gl(\'langName\', '+gl('langCode', lang)+')+\' website.\'))'
 			exec(lineA)
 			
-			lineA = 'menu.add_option(category_name, \'lang_'+l('langCode', lang)+'\', lang_'+l('langCode', lang)+')'
+			lineA = 'menu.add_option(category_name, \'lang_'+gl('langCode', lang)+'\', lang_'+gl('langCode', lang)+')'
 			exec(lineA)
 			
 			
