@@ -70,7 +70,15 @@ from gen.lib.eventroletype import EventRoleType
 
 
 def gl(name, lang):
-	"""returns label in specified language"""
+	"""Returns label in specified language.
+	
+	Parameters:
+		name - string containing label name
+		lang - integer corresponding to desired language
+	
+	Returns:
+		string of the requested label in the chosen language
+	"""
 	return label[name][lang]
 
 # HungariaReport
@@ -79,6 +87,7 @@ class HungariaReport(Report):
 	
 	
 	def __init__(self, database, options):
+		"""Called by GRAMPS to perform module-specific initialization."""
 		
 		Report.__init__(self, database, options)
 		menu = options.menu
@@ -93,6 +102,7 @@ class HungariaReport(Report):
 		
 	
 	def write_report(self):
+		"""Called by GRAMPS to generate report output."""
 		
 		self.createdImages = False
 		
@@ -208,7 +218,7 @@ class HungariaReport(Report):
 			output = output + '</td><td class="field">'
 			
 			for event in self.getEvents(person):
-				output = output + self.getEventLink(event, lang)
+				output = output + self.htmlEventLink(event, lang)
 			
 			output = output + '</td></tr>'
 			
@@ -357,10 +367,19 @@ class HungariaReport(Report):
 		return output
 	
 	
-	# ---------------------------------------- PERSON AND FAMILY RELATED FUNCTIONS BEGIN
-	
+	########## PERSON AND FAMILY RELATED FUNCTIONS BEGIN
+
 	
 	def getEvents(self, person):
+		"""Returns all events for a person.
+		
+		Parameters:
+			person - Person object
+		
+		Returns:
+			list of Event objects associated with the person
+		
+		"""
 		eventrefs = person.get_event_ref_list()
 		events = []
 		for eventref in eventrefs:
@@ -369,6 +388,16 @@ class HungariaReport(Report):
 	
 	
 	def getEventsByType(self, person, type):
+		"""Returns all events of specified type for a person.
+		
+		Parameters:
+			person - Person object
+			type - string containing type of Event object (e.g.: Birth)
+		
+		Returns:
+			list of Event objects of specified type associated with the person
+		
+		"""
 		eventrefs = person.get_event_ref_list()
 		events = []
 		for eventref in eventrefs:
@@ -376,7 +405,17 @@ class HungariaReport(Report):
 				events.append(self.db.get_event_from_handle(eventref.ref).get_type())
 		return events
 	
-	def getEventLink(self, event, lang):
+	def htmlEventLink(self, event, lang):
+		"""Returns single line HTML fragment for displaying specified event.
+		
+		Parameters:
+			event - Event object
+			lang - integer corresponding to chosen language
+		
+		Returns:
+			HTML fragment with event type, as well as date and place if available
+		
+		"""
 		output = '<div>' + gl(str(event.get_type()).lower(), lang) + ': ' + self.getEventDate(event)
 		if self.getPlaceLink(self.getEventPlace(event)):
 			output = output + ' (' + self.getPlaceLink(self.getEventPlace(event)) + ')'
@@ -949,10 +988,9 @@ class HungariaReport(Report):
 				list.append(item)
 		
 		return list
-		
 	
 	
-	# ---------------------------------------- PERSON AND FAMILY RELATED FUNCTIONS CEASE
+	########## PERSON AND FAMILY RELATED FUNCTIONS BEGIN
 	
 	
 	# ---------------------------------------- UTILITY FUNCTIONS BEGIN
