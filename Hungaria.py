@@ -222,29 +222,6 @@ class HungariaReport(Report):
 			
 			output = output + '</td></tr>'
 			
-			#output = output + '<tr><td class="label">'
-			#output = output + gl('birth', lang)+':'
-			#output = output + '</td><td class="field">'
-			
-			#output = output + self.getBirthdate(person)
-			
-			#output = output + '</td></tr>'
-			
-			
-			#first = True
-			#for parent in self.getParents(person):
-			#	output = output + '<tr><td class="label">'
-			#	if first:
-			#		output = output + gl('parents', lang)+':'
-			#	else:
-			#		output = output + '&nbsp;'
-			#	first = False
-			#	output = output + '</td><td class="field">'
-			#	
-			#	output = output + self.getPersonLink(parent, '', lang)
-			#	
-			#	output = output + '</td></tr>'
-			
 			output = output + '</table>'
 			
 			if self.hasPicture(person):
@@ -352,9 +329,6 @@ class HungariaReport(Report):
 		output = output + '</div>'
 		output = output + '<div id="menu">'
 		output = output + '<a href="index.html">[ ' + gl('sec_persons', clang) + ' ]</a>'
-		#output = output + '<a href="families.html">[ Families ]</a>'
-		#output = output + '<a href="events.html">[ Events ]</a>'
-		#output = output + '<a href="places.html">[ Places ]</a>'
 		output = output + '</div>'
 		output = output + '<div id="content">'
 		return output
@@ -703,14 +677,6 @@ class HungariaReport(Report):
 		
 		return output
 		
-		#try:
-		#	name = person.get_primary_name().get_surname() + ', ' + person.get_primary_name().get_first_name()
-		#except AttributeError:
-		#	name = ""
-		#
-		#return name
-		
-	
 	
 	def getFamilyname(self, person):
 		
