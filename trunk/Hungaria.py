@@ -79,7 +79,7 @@ def gl(name, lang):
 	Returns:
 		string of the requested label in the chosen language
 	"""
-	return label[name][lang]
+	return label[name].split('|')[lang-1]
 
 # HungariaReport
 class HungariaReport(Report):
@@ -187,7 +187,7 @@ class HungariaReport(Report):
 		for person in self.opts['allPeople']:
 			filename = self.getPersonId(person).upper() + '.html'
 			
-			websiteTitle = self.opts['focusFamily'] + ' - ' + gl('persons', lang)
+			websiteTitle = self.opts['focusFamily'] + ' - ' + gl('sec_persons', lang)
 			
 			output = ''
 			
@@ -203,18 +203,18 @@ class HungariaReport(Report):
 			
 			
 			output = output + '<tr><td class="label">'
-			output = output + gl('gender', lang)+':'
+			output = output + gl('lbl_gender', lang)+':'
 			output = output + '</td><td class="field">'
 			
 			if person.get_gender() == 1:
-				output = output + gl('male', lang)
+				output = output + gl('dat_male', lang)
 			if person.get_gender() == 0:
-				output = output + gl('female', lang)
+				output = output + gl('dat_female', lang)
 			
 			output = output + '</td></tr>'
 			
 			output = output + '<tr><td class="label">'
-			output = output + gl('events', lang)+':'
+			output = output + gl('lbl_events', lang)+':'
 			output = output + '</td><td class="field">'
 			
 			for event in self.getEvents(person):
@@ -267,12 +267,12 @@ class HungariaReport(Report):
 		#else:
 		#	websiteTitle = gl('websiteTitleC', lang).replace('~', self.opts['focusFamily'])
 		
-		websiteTitle = self.opts['focusFamily'] + ' - ' + gl('persons', lang)
+		websiteTitle = self.opts['focusFamily'] + ' - ' + gl('sec_persons', lang)
 		
 		output = ''
 		output = output + self.generateHtmlIntro(websiteTitle, filename, lang)
 		
-		output = output + '<h2>' + gl('persons', lang) + '</h2>'
+		output = output + '<h2>' + gl('sec_persons', lang) + '</h2>'
 		
 		activeSurname = '„Hass, alkoss, gyarapíts: s a haza fényre derűl!”'
 		first = True
@@ -351,7 +351,7 @@ class HungariaReport(Report):
 		output = output + '<div id="impressumlink"><a href="../impressum.html">H</a></div>'
 		output = output + '</div>'
 		output = output + '<div id="menu">'
-		output = output + '<a href="index.html">[ ' + gl('persons', clang) + ' ]</a>'
+		output = output + '<a href="index.html">[ ' + gl('sec_persons', clang) + ' ]</a>'
 		#output = output + '<a href="families.html">[ Families ]</a>'
 		#output = output + '<a href="events.html">[ Events ]</a>'
 		#output = output + '<a href="places.html">[ Places ]</a>'
@@ -416,7 +416,7 @@ class HungariaReport(Report):
 			HTML fragment with event type, as well as date and place if available
 		
 		"""
-		output = '<div>' + gl(str(event.get_type()).lower(), lang) + ': ' + self.getEventDate(event)
+		output = '<div>' + gl('lbl_'+str(event.get_type()).lower(), lang) + ': ' + self.getEventDate(event)
 		if self.getPlaceLink(self.getEventPlace(event)):
 			output = output + ' (' + self.getPlaceLink(self.getEventPlace(event)) + ')'
 		output = output + '</div>'
@@ -1260,19 +1260,19 @@ VOWELS = [	'a', 'á', 'à', 'ä', 'â', 'ã',
 			'А', 'И', 'І', 'Й', 'О', 'У',
 			'Ў', 'Э', 'Ә', 'Ө', 'Ү', 'Ұ']
 
-bg = 1
-cs = 2
-da = 3
-de = 4
-el = 5
-en = 6
-es = 7
-fr = 8
-ko = 9
-hi = 10
-hr = 11
-it = 12
-hu = 13
+hu = 1
+bg = 2
+cs = 3
+da = 4
+de = 5
+el = 6
+en = 7
+es = 8
+fr = 9
+ko = 10
+hi = 11
+hr = 12
+it = 13
 ja = 14
 nl = 15
 no = 16
@@ -1284,358 +1284,140 @@ sv = 21
 fi = 22
 zh = 23
 sr = 24
+tw = 25
+ar = 26
+ca = 27
+tl = 28
+iw = 29
+bi = 30
+lv = 31
+lt = 32
+sk = 33
+sl = 34
+uk = 35
+vi = 36
 
 langList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
-langListAsia = [ko, hi, ja, zh]
-langListEastEurope = [bg, cs, el, hr, hu, pl, ro, ru, sr]
+langListAsia = [bi, ko, hi, ja, tl, vi, zh, tw]
+langListEastEurope = [bg, cs, el, hr, hu, lt, lv, pl, ro, ru, sl, sk, sr, uk]
 langListNorthEurope = [da, nl, no, sv, fi]
-langListWestEurope = [de, en, es, fr, it, pt]
+langListWestEurope = [ca, de, en, es, fr, it, pt]
+langListSemitic = [ar, iw]
 
 # multilingual labels
 
-temp = {}
 label = {}
-
-label['langCode'] = {}
-label['langCode'][bg] = "bg"
-label['langCode'][cs] = "cs"
-label['langCode'][da] = "da"
-label['langCode'][de] = "de"
-label['langCode'][el] = "el"
-label['langCode'][en] = "en"
-label['langCode'][es] = "es"
-label['langCode'][fr] = "fr"
-label['langCode'][ko] = "ko"
-label['langCode'][hi] = "hi"
-label['langCode'][hr] = "hr"
-label['langCode'][it] = "it"
-label['langCode'][hu] = "hu"
-label['langCode'][ja] = "ja"
-label['langCode'][nl] = "nl"
-label['langCode'][no] = "no"
-label['langCode'][pl] = "pl"
-label['langCode'][pt] = "pt"
-label['langCode'][ro] = "ro"
-label['langCode'][ru] = "ru"
-label['langCode'][sr] = "sr"
-label['langCode'][sv] = "sv"
-label['langCode'][fi] = "fi"
-label['langCode'][zh] = "zh"
-
-label['langName'] = {}
-label['langName'][bg] = "Български"
-label['langName'][cs] = "Čeština"
-label['langName'][da] = "Dansk"
-label['langName'][de] = "Deutsch"
-label['langName'][el] = "Ελληνική"
-label['langName'][en] = "English"
-label['langName'][es] = "Español"
-label['langName'][fr] = "Français"
-label['langName'][ko] = "한국어"
-label['langName'][hi] = "हिन्दी"
-label['langName'][hr] = "Hrvatski"
-label['langName'][it] = "Italiano"
-label['langName'][hu] = "Magyar"
-label['langName'][ja] = "日本語"
-label['langName'][nl] = "Nederlands"
-label['langName'][no] = "Norsk"
-label['langName'][pl] = "Polski"
-label['langName'][pt] = "Português"
-label['langName'][ro] = "Română"
-label['langName'][ru] = "Русский"
-label['langName'][sr] = "Српски"
-label['langName'][sv] = "Svenska"
-label['langName'][fi] = "Suomi"
-label['langName'][zh] = "中文"
-
-label['welcome'] = {}
-label['welcome'][bg] = "Добре дошли!"
-label['welcome'][cs] = "Vítejte!"
-label['welcome'][da] = "Velkommen!"
-label['welcome'][de] = "Willkommen!"
-label['welcome'][el] = "Καλώς ορίσατε!"
-label['welcome'][en] = "Welcome!"
-label['welcome'][es] = "Bienvenido!"
-label['welcome'][fr] = "Bienvenue!"
-label['welcome'][ko] = "환영!"
-label['welcome'][hi] = "स्वागत !"
-label['welcome'][hr] = "Dobro došli!"
-label['welcome'][it] = "Benvenuto!"
-label['welcome'][hu] = "Üdvözöljük!"
-label['welcome'][ja] = "ようこそ！"
-label['welcome'][nl] = "Welkom!"
-label['welcome'][no] = "Velkommen!"
-label['welcome'][pl] = "Witamy!"
-label['welcome'][pt] = "Bem-vindo!"
-label['welcome'][ro] = "Bun venit!"
-label['welcome'][ru] = "Добро пожаловать!"
-label['welcome'][sr] = "Добро дошли!"
-label['welcome'][sv] = "Välkommen!"
-label['welcome'][fi] = "Tervetuloa!"
-label['welcome'][zh] = "欢迎！"
-
-label['websiteTitleV'] = {}
-label['websiteTitleV'][bg] = "В Генеалогия на ~ и свързаните с Семейства"
-label['websiteTitleV'][cs] = "Na rodokmenu z rodiny ~ a související"
-label['websiteTitleV'][da] = "De Genealogi af ~ og beslægtede Familier"
-label['websiteTitleV'][de] = "Der Stammbaum des ~ und des in Verbindung stehenden Familien"
-label['websiteTitleV'][el] = "Η Γενεαλογία του ~ και Σχετικές Οικογένειες"
-label['websiteTitleV'][en] = "The Genealogy of the ~ and Related Families"
-label['websiteTitleV'][es] = "La Genealogía de la ~ y las Formas Conexas de Familias"
-label['websiteTitleV'][fr] = "La Généalogie de la ~ et des familles"
-label['websiteTitleV'][ko] = "나무의 가족 ~ 제품군과 관련 가족합니다"
-label['websiteTitleV'][hi] = "यह वंशावली के ~ और संबंधित वर्ग"
-label['websiteTitleV'][hr] = "U rodovnike u ~ i povezanim obiteljima"
-label['websiteTitleV'][it] = "La genealogia dei ~ e correlati Famiglie"
-label['websiteTitleV'][hu] = "Az ~ és rokon családok családfája"
-label['websiteTitleV'][ja] = "の系譜を ~ と関連したご家族"
-label['websiteTitleV'][nl] = "De Genealogie van de ~ en Betrokken Families"
-label['websiteTitleV'][no] = "Familien trær av ~ familien og beslektede familier"
-label['websiteTitleV'][pl] = "W Genealogia w ~ i związki Rodziny"
-label['websiteTitleV'][pt] = "A genealogia da ~ e Afins Famílias"
-label['websiteTitleV'][ro] = "Genealogie de a ~ şi Familii înrudite"
-label['websiteTitleV'][ru] = "Генеалогия из ~ и соответствующих семей"
-label['websiteTitleV'][sr] = "У родовнике од ~ и повезаним породицама"
-label['websiteTitleV'][sv] = "Den släktforskning i ~ och närstående Familjer"
-label['websiteTitleV'][fi] = "Tutkimus siitä ~ perhe ja siihen liittyvät perheille"
-label['websiteTitleV'][zh] = "族谱的 ~ 及相关家属"
-
-label['websiteTitleC'] = {}
-label['websiteTitleC'][bg] = "В Генеалогия на ~ и свързаните с Семейства"
-label['websiteTitleC'][cs] = "Na rodokmenu z ~ a souvisejících rodin"
-label['websiteTitleC'][da] = "De Genealogi af ~ og beslægtede Familier"
-label['websiteTitleC'][de] = "Die Genealogie der ~ und verwandte Familien"
-label['websiteTitleC'][el] = "Η Γενεαλογία του ~ και Σχετικές Οικογένειες"
-label['websiteTitleC'][en] = "The Genealogy of the ~ and Related Families"
-label['websiteTitleC'][es] = "La Genealogía de la ~ y las Formas Conexas de Familias"
-label['websiteTitleC'][fr] = "La Généalogie de la ~ et des familles"
-label['websiteTitleC'][ko] = "나무의 가족 ~ 제품군과 관련 가족합니다"
-label['websiteTitleC'][hi] = "यह वंशावली के Szabó और संबंधित वर्ग"
-label['websiteTitleC'][hr] = "U rodovnike u ~ i povezanim obiteljima"
-label['websiteTitleC'][it] = "La genealogia dei ~ e correlati Famiglie"
-label['websiteTitleC'][hu] = "A ~ és rokon családok családfája"
-label['websiteTitleC'][ja] = "の系譜を ~ と関連したご家族"
-label['websiteTitleC'][nl] = "De Genealogie van de ~ en Betrokken Families"
-label['websiteTitleC'][no] = "Familien trær av ~ familien og beslektede familier"
-label['websiteTitleC'][pl] = "W Genealogia w ~ i związki Rodziny"
-label['websiteTitleC'][pt] = "A genealogia da ~ e Afins Famílias"
-label['websiteTitleC'][ro] = "Genealogie de a ~ şi Familii înrudite"
-label['websiteTitleC'][ru] = "Генеалогия из ~ и соответствующих семей"
-label['websiteTitleC'][sr] = "У родовнике од ~ и повезаним породицама"
-label['websiteTitleC'][sv] = "Den släktforskning i ~ och närstående Familjer"
-label['websiteTitleC'][fi] = "Tutkimus siitä ~ perhe ja siihen liittyvät perheille"
-label['websiteTitleC'][zh] = "族谱的 ~ 及相关家属"
-
-label['persons'] = {}
-label['persons'][bg] = "Лица"
-label['persons'][cs] = "Osoby"
-label['persons'][da] = "Personer"
-label['persons'][de] = "Personen"
-label['persons'][el] = "Πρόσωπα"
-label['persons'][en] = "Persons"
-label['persons'][es] = "Personas"
-label['persons'][fr] = "Les personnes"
-label['persons'][ko] = "인"
-label['persons'][hi] = "व्यक्ति"
-label['persons'][hr] = "Osobe"
-label['persons'][it] = "Persone"
-label['persons'][hu] = "Személyek"
-label['persons'][ja] = "人"
-label['persons'][nl] = "Personen"
-label['persons'][no] = "Personer"
-label['persons'][pl] = "Osoby"
-label['persons'][pt] = "Pessoas"
-label['persons'][ro] = "Persoane"
-label['persons'][ru] = "Лица"
-label['persons'][sr] = "Лица"
-label['persons'][sv] = "Personer"
-label['persons'][fi] = "Henkilöt"
-label['persons'][zh] = "人"
-
-label['gender'] = {}
-label['gender'][bg] = "Пол"
-label['gender'][cs] = "Pohlaví"
-label['gender'][da] = "Køn"
-label['gender'][de] = "Geschlecht"
-label['gender'][el] = "Γένος"
-label['gender'][en] = "Gender"
-label['gender'][es] = "Género"
-label['gender'][fr] = "Sexe"
-label['gender'][ko] = "성별"
-label['gender'][hi] = "लिंग"
-label['gender'][hr] = "Spol"
-label['gender'][it] = "Genere"
-label['gender'][hu] = "Nem"
-label['gender'][ja] = "性"
-label['gender'][nl] = "Geslacht"
-label['gender'][no] = "Kjønn"
-label['gender'][pl] = "Płeć"
-label['gender'][pt] = "Gênero"
-label['gender'][ro] = "Gen"
-label['gender'][ru] = "Пол"
-label['gender'][sr] = "Спол"
-label['gender'][sv] = "Kön"
-label['gender'][fi] = "Sukupuoli"
-label['gender'][zh] = "性别"
-
-label['male'] = {}
-label['male'][bg] = "мъжки"
-label['male'][cs] = "muž"
-label['male'][da] = "hankøn"
-label['male'][de] = "männlich"
-label['male'][el] = "αρσενικό"
-label['male'][en] = "male"
-label['male'][es] = "macho"
-label['male'][fr] = "mâle"
-label['male'][ko] = "남성"
-label['male'][hi] = "नर"
-label['male'][hr] = "muško"
-label['male'][it] = "maschile"
-label['male'][hu] = "férfi"
-label['male'][ja] = "男性"
-label['male'][nl] = "mannelijk"
-label['male'][no] = "mann"
-label['male'][pl] = "męski"
-label['male'][pt] = "macho"
-label['male'][ro] = "masculin"
-label['male'][ru] = "мужской"
-label['male'][sr] = "мушко"
-label['male'][sv] = "manlig"
-label['male'][fi] = "mies"
-label['male'][zh] = "男性"
-
-label['female'] = {}
-label['female'][bg] = "женски"
-label['female'][cs] = "žena"
-label['female'][da] = "hunkøn"
-label['female'][de] = "weiblich"
-label['female'][el] = "θηλυκό"
-label['female'][en] = "female"
-label['female'][es] = "hembra"
-label['female'][fr] = "femelle"
-label['female'][ko] = "여성"
-label['female'][hi] = "मादा"
-label['female'][hr] = "žensko"
-label['female'][it] = "femminile"
-label['female'][hu] = "nő"
-label['female'][ja] = "女性"
-label['female'][nl] = "vrouwelijk"
-label['female'][no] = "kvinne"
-label['female'][pl] = "żeński"
-label['female'][pt] = "fêmea"
-label['female'][ro] = "feminin"
-label['female'][ru] = "женщина"
-label['female'][sr] = "женско"
-label['female'][sv] = "kvinna"
-label['female'][fi] = "nainen"
-label['female'][zh] = "女性"
-
-label['birth'] = {}
-label['birth'][bg] = "Роден"
-label['birth'][cs] = "Narozený"
-label['birth'][da] = "Født"
-label['birth'][de] = "Geboren"
-label['birth'][el] = "Γεννημένος"
-label['birth'][en] = "Born"
-label['birth'][es] = "Nacido"
-label['birth'][fr] = "Né"
-label['birth'][ko] = "타고난"
-label['birth'][hi] = "जन्म लेना"
-label['birth'][hr] = "Roditi se"
-label['birth'][it] = "Nato"
-label['birth'][hu] = "Született"
-label['birth'][ja] = "生まれつきの"
-label['birth'][nl] = "Geboren"
-label['birth'][no] = "Født"
-label['birth'][pl] = "Urodzony"
-label['birth'][pt] = "Nascer"
-label['birth'][ro] = "Născut"
-label['birth'][ru] = "Родился"
-label['birth'][sr] = "Роди се"
-label['birth'][sv] = "Född"
-label['birth'][fi] = "Syntynyt"
-label['birth'][zh] = "天生的"
-
-label['death'] = {}
-label['death'][bg] = "Починал"
-label['death'][cs] = "Zemřel"
-label['death'][da] = "Døde"
-label['death'][de] = "Gestorben"
-label['death'][el] = "Πέθανε"
-label['death'][en] = "Died"
-label['death'][es] = "Murió"
-label['death'][fr] = "Mort"
-label['death'][ko] = "사망"
-label['death'][hi] = "मर गया"
-label['death'][hr] = "Umro"
-label['death'][it] = "Morto"
-label['death'][hu] = "Elhalálozott"
-label['death'][ja] = "死亡"
-label['death'][nl] = "Overleden"
-label['death'][no] = "Døde"
-label['death'][pl] = "Zmarł"
-label['death'][pt] = "Faleceu"
-label['death'][ro] = "A murit"
-label['death'][ru] = "Умер"
-label['death'][sr] = "Умро"
-label['death'][sv] = "Dog"
-label['death'][fi] = "Kuoli"
-label['death'][zh] = "死亡"
-
-label['events'] = {}
-label['events'][bg] = "Събития"
-label['events'][cs] = "Události"
-label['events'][da] = "Begivenheder"
-label['events'][de] = "Veranstaltungen"
-label['events'][el] = "Εκδηλώσεις"
-label['events'][en] = "Events"
-label['events'][es] = "Eventos"
-label['events'][fr] = "Evénements"
-label['events'][ko] = "이벤트"
-label['events'][hi] = "घटनाएँ"
-label['events'][hr] = "Događanja"
-label['events'][it] = "Eventi"
-label['events'][hu] = "Események"
-label['events'][ja] = "イベント"
-label['events'][nl] = "Evenementen"
-label['events'][no] = "Arrangementer"
-label['events'][pl] = "Wydarzenia"
-label['events'][pt] = "Eventos"
-label['events'][ro] = "Evenimente"
-label['events'][ru] = "События"
-label['events'][sr] = "Догађања"
-label['events'][sv] = "Evenemang"
-label['events'][fi] = "Tapahtumat"
-label['events'][zh] = "活动"
-
-
-temp[bg] = ""
-temp[cs] = ""
-temp[da] = ""
-temp[de] = ""
-temp[el] = ""
-temp[en] = ""
-temp[es] = ""
-temp[fr] = ""
-temp[ko] = ""
-temp[hi] = ""
-temp[hr] = ""
-temp[it] = ""
-temp[hu] = ""
-temp[ja] = ""
-temp[nl] = ""
-temp[no] = ""
-temp[pl] = ""
-temp[pt] = ""
-temp[ro] = ""
-temp[ru] = ""
-temp[sr] = ""
-temp[sv] = ""
-temp[fi] = ""
-temp[zh] = ""
-
-
+label['langCode'] = """hu|bg|cs|da|de|el|en|es|fr|ko|hi|hr|it|ja|nl|no|pl|pt|ro|ru|sv|fi|zh|sr|tw|ar|ca|tl|iw|bi|lv|lt|sk|sl|uk|vi"""
+label['langName'] = """Magyar|Български|Česky|Dansk|Deutsch|Ελληνικά|English|Español|Français|한국어|हिन्दी|Hrvatski|Italiano|日本語|Nederlands|Norsk|Polski|Português|Română|Российская|Svenska|Suomi|中国|Српски|中國|‏العربية‎|Catalan|Tagalog|‏עברית‎|Indonesia|Latviešu|Lietuvių|Slovenský|Slovenščina|Українська|Việt"""
+label['websiteTitleC'] = """A ~ és Rokon Családok|В ~ семейството и сродните семейства|V ~ rodiny a příbuzných rodin|Den ~ familie og beslægtede familier|Die Familie ~ und der verwandten Familien|Ο ~ οικογένειας και των συγγενικών οικογενειών|The ~ Family and Related Families|~ La familia y las familias|~ la famille et les familles|가족과 관련된 가족은 ~|इस ~ परिवार और संबंधित परिवारों|U ~ obitelji i srodne obitelji|~ La famiglia e le relative famiglie|~家族や家族の関係|De familie ~ en aanverwante families|Den ~ Familie og beslektede familier|~ w rodzinie i związanych z nimi rodzin|A família ~ famílias e afins|~ de familie şi legate de familii|~ семьи и связанных с ними семей|Den ~ familj och närstående familjer|The ~ perhe ja niihin liittyvät perheiden|该~家庭和有关家庭|~ У породице и сродне породице|該~家庭和有關家庭|‏وقد ~ الأسرة وما يتصل بذلك من الأسر‎|~ La família i les famílies|Ang ~ ng pamilya at mga kaugnay na mga pamilya|‏~ את המשפחה ואת משפחות קרובים‎|~ yang terkait keluarga dan keluarga|Par ~ Ģimenes un Saistītie ģimenēm|Į ~ šeimos ir su jais susijusių Šeima|V ~ rodiny a príbuzných rodín|~ v družini in sorodnih družin|~ сім'ї та пов'язаних з ними сімей|~ các gia đình và liên quan đến gia đình"""
+label['websiteTitleV'] = """Az ~ és Rokon Családok|В ~ семейството и сродните семейства|V ~ rodiny a příbuzných rodin|Den ~ familie og beslægtede familier|Die ~ Familie und verwandte Familien|Η ~ οικογένειας και των συγγενικών οικογενειών|The ~ Family and Related Families|El ~ relacionados con la familia y las familias|~ la famille et les familles|가족과 관련된 가족의 ~|इस ~ परिवार और संबंधित परिवारों|U ~ obitelji i srodne obitelji|Il ~ famiglia e le relative famiglie|~家族や家族の関係|De ~ familie en aanverwante families|Den ~ Familie og beslektede familier|W ~ rodziny i związanych z nimi rodzin|A família ~ famílias e afins|De ~ legate de familie şi familiile|~ семьи и связанных с ними семей|Den ~ familj och närstående familjer|The ~ perhe ja niihin liittyvät perheiden|该~家庭和有关家庭|У ~ породице и сродне породице|該~家庭和有關家庭|‏وقد ~ الأسرة وما يتصل بذلك من الأسر‎|El ~ relacionats amb la família i les famílies|Ang pamilya ~ at mga kaugnay na mga pamilya|‏~ את המשפחה ואת משפחות קרובים‎|~ dengan keluarga dan keluarga terkait|Ar ~ Ģimenes un Saistītie ģimenēm|The ~ šeimai ir gretutinių Šeima|V ~ rodiny a príbuzných rodín|V ~ družinskega in sorodnih družin|~ сім'ї та пов'язаних з ними сімей|~ các gia đình và liên quan đến gia đình"""
+label['splashWelcome'] = """Isten hozta!|Добре дошли!|Vítejte!|Velkommen!|Willkommen!|Καλώς ορίσατε!|Welcome!|Bienvenido!|Bienvenue!|환영!|स्वागत!|Dobro došli!|Benvenuto!|ようこそ！|Welkom!|Velkommen!|Witamy!|Bem-vindo!|Bun venit!|Добро пожаловать!|Välkommen!|Tervetuloa!|欢迎！|Добро дошли!|歡迎！|‏مرحبا!‎|Benvingut!|Maligayang pagdating!|‏ברוך הבא!‎|Selamat datang!|Laipni lūdzam!|Sveiki atvykę!|Vitajte!|Dobrodošli!|Ласкаво просимо!|Chào mừng!"""
+label['splashEnter'] = """Lépjen be!|Въведете!|Enter!|Indtast!|Geben Sie!|Εισάγετε!|Enter!|Entra!|Entrez!|입력!|दर्ज करें!|Unesite!|Entra!|を入力してください！|Enter!|Skriv!|Wejdz!|Entra!|Introduceţi!|Войти!|Enter!|Kirjoita!|输入！|Унесите!|輸入！|‏أدخل!‎|Entra!|Enter!|‏הזן!‎|Masukkan!|Enter!|Registracija!|Enter!|Vstopite!|Увійти!|Nhập!"""
+label['dat_female'] = """nő|женски|žena|hunkøn|weiblich|θηλυκό|female|hembra|femelle|여성|मादा|žensko|femminile|女性|vrouwelijk|kvinne|żeński|fêmea|feminin|женщин|kvinna|nainen|女性|женско|女性|‏أنثى‎|femella|babae|‏נקבה‎|perempuan|sieviete|moteris|žena|ženska|жінок|nữ"""
+label['dat_adoptivefather'] = """Örökbefogadó apa|Осиновено майката|Adoptivní matka|Adoptivmoedre|Adoptiv-Mutter|Υιοθεσίας μητέρας|Adoptive mother|Madre adoptiva|Mère adoptive|입양 어머니|दत्तक माता|Posvojitelj majka|Madre adottiva|養母|Adoptieve moeder|Adoptive mor|Adopcyjnych matki|Mãe adotiva|Mama adoptiva|Приемные матери|Adoptiv mamma|Otto-äiti|养母|Усвојилац мајка|養母|‏الأم المتبنية‎|Mare adoptiva|Adoptive ina|‏אמא מאמצת‎|Ibu angkat|Izvēles mātes|Įsūnytas mama|Adoptívni matka|Posvojitelji mati|Прийомні матері|Adoptive mẹ"""
+label['dat_adoptivemother'] = """Örökbefogadó anya|Осиновено майката|Adoptivní matka|Adoptivmoedre|Adoptiv-Mutter|Υιοθεσίας μητέρας|Adoptive mother|Madre adoptiva|Mère adoptive|입양 어머니|दत्तक माता|Posvojitelj majka|Madre adottiva|養母|Adoptieve moeder|Adoptive mor|Adopcyjnych matki|Mãe adotiva|Mama adoptiva|Приемные матери|Adoptiv mamma|Otto-äiti|养母|Усвојилац мајка|養母|‏الأم المتبنية‎|Mare adoptiva|Adoptive ina|‏אמא מאמצת‎|Ibu angkat|Izvēles mātes|Įsūnytas mama|Adoptívni matka|Posvojitelj, mati|Прийомні матері|Adoptive mẹ"""
+label['dat_adoptivefather'] = """Örökbefogadó apa|Осиновено майката|Adoptivní matka|Adoptivmoedre|Adoptiv-Mutter|Υιοθεσίας μητέρας|Adoptive mother|Madre adoptiva|Mère adoptive|입양 어머니|दत्तक माता|Posvojitelj majka|Madre adottiva|養母|Adoptieve moeder|Adoptive mor|Adopcyjnych matki|Mãe adotiva|Mama adoptiva|Приемные матери|Adoptiv mamma|Otto-äiti|养母|Усвојилац мајка|養母|‏الأم المتبنية‎|Mare adoptiva|Adoptive ina|‏אמא מאמצת‎|Ibu angkat|Izvēles mātes|Įsūnytas mama|Adoptívni matka|Posvojitelj, mati|Прийомні матері|Adoptive mẹ"""
+label['dat_adoptivemother'] = """Örökbefogadó anya|Осиновено майката|Adoptivní matka|Adoptivmoedre|Adoptiv-Mutter|Υιοθεσίας μητέρας|Adoptive mother|Madre adoptiva|Mère adoptive|입양 어머니|दत्तक माता|Posvojitelj majka|Madre adottiva|養母|Adoptieve moeder|Adoptive mor|Adopcyjnych matki|Mãe adotiva|Mama adoptiva|Приемные матери|Adoptiv mamma|Otto-äiti|养母|Усвојилац мајка|養母|‏الأم المتبنية‎|Mare adoptiva|Adoptive ina|‏אמא מאמצת‎|Ibu angkat|Izvēles mātes|Įsūnytas mama|Adoptívni matka|Posvojenega mati|Прийомні матері|Adoptive mẹ"""
+label['dat_adoptiveparent'] = """Örökbefogadó szülő|Приемен родител|Adoptivní rodič|Adoptant|Adoptiveltern|Υιοθεσίας γονέας|Adoptive parent|Padres adoptivos|Parent adoptif|입양 부모|दत्तक माता पिता|Posvojitelj|Genitori adottivi|養父母|Adoptiefouder|Adoptivforelder|Adopcyjnych rodzica|Mãe adotiva|Părinte adoptiv|Усыновитель|Adoptivförälder|Ottovanhemman|养父母|Усвојитељ|養父母|‏المتبني‎|Pares adoptius|Adoptive magulang|‏מאמצת האב‎|Orang tua angkat|Izvēles mātes|Įvaikinę tėvai|Adoptívni rodič|Posvojitelj|Усиновітель|Adoptive cha mẹ"""
+label['dat_adoptiveparents'] = """Örökbefogadó szülők|Приемен родител|Adoptivní rodiče|Adoptivforældre|Adoptiveltern|Θετούς γονείς|Adoptive parents|Los padres adoptivos|Les parents adoptifs|입양 부모|दत्तक माता पिता|Sposoban za roditelje|Genitori adottivi|養父母|Adoptieouders|Adoptivforeldre|Przybrani rodzice|Pais adoptivos|Adoptivi|Приемные родители|Adoptivföräldrar|Adoptiovanhemmat|养父母|Способан за родитеље|養父母|‏الآباء بالتبني‎|Els pares adoptius|Adoptive mga magulang|‏מאמצת ההורים‎|Orangtua angkat|Audžuvecāki|Įtėviai|Adoptívni rodičia|Posvojitelji|Прийомні батьки|Adoptive cha mẹ"""
+label['dat_birthfather'] = """Édesapa|Раждане баща|Narození otce|Fødsel far|Geboren Vater|Γέννηση πατέρα|Birth father|Nacimiento padre|Père|친아버지|जन्म पिता|Rođenja oca|Nascita padre|出生の父|Geboorte vader|Birth far|Urodzenia ojca|Nascimento pai|Naştere tatăl|Рождения отца|Födelse far|Birth isä|父亲出生|Рођења оца|父親出生|‏ولادة الأب‎|Naixement pare|Kapanganakan ama|‏אבא לידה‎|Kelahiran ayah|Dzimšanas tēvs|Gimimo tėvas|Narodenia otca|Rojstva očeta|Народження батька|Sinh cha"""
+label['dat_birthmother'] = """Édesanya|Раждане майка|Porod matky|Fødsel mor|Geboren Mutter|Γέννηση μητέρα|Birth mother|Nacimiento madre|Mère|친엄마|जन्म के समय माँ|Rođenje majka|Nascita della madre|生みの母|Geboorte moeder|Fødsel mor|Urodzenia matki|Mãe biológica|Nasterii mama|Рождения матери|Födelse modern|Birth äiti|生母|Рођење мајка|生母|‏ولادة الأم‎|Naixement mare|Kapanganakan ina|‏אמא לידה‎|Kelahiran ibu|Dzimšanas mātes|Gimimo mama|Pôrod matky|Rojstva matere|Народження матері|Sinh mẹ"""
+label['dat_birthparent'] = """Édesszülő|Раждане родител|Porod mateřské|Fødsel moderselskab|Geboren Eltern|Γέννηση μητρική|Birth parent|Nacimiento padre|Naissance des parents|출생 부모|जन्म के समय माँ बाप|Rođenje roditelj|Nascita madre|生みの親|Geboorte ouder|Birth forelder|Urodzenia rodzica|De pais|Părinte naştere|Рождения родителей|Födelse förälder|Birth vanhemman|出生母公司|Рођење родитељ|出生母公司|‏ولادة الأم‎|Naixement pare|Kapanganakan magulang|‏לידה האב‎|Kelahiran orang tua|Dzimšanas mātes|Gimimo patronuojančios|Pôrod materskej|Pomoč ob rojstvu otroka od staršev|Народження батьків|Sinh cha mẹ"""
+label['dat_birthparents'] = """Édesszülők|Раждане на родителите|Porod rodiče|Fødsel forældre|Geboren Eltern|Γέννηση γονείς|Birth parents|Padres|Naissance parents|친부모|जन्म के माता पिता|Rođenje roditelje|Nascita genitori|生みの親|Geboorte ouders|Fødsel foreldre|Urodzenia rodziców|Pais biológicos|Naştere părinţi|Рождения родителей|Födelse föräldrar|Birth vanhemmat|亲生父母|Рођење родитеље|親生父母|‏الميلاد الآباء‎|Pares|Kapanganakan ng mga magulang|‏לידה ההורים‎|Kelahiran orang tua|Dzimšanas vecāki|Gimimo tėvai|Pôrod rodičia|Rojstva staršev|Народження батьків|Sinh cha mẹ"""
+label['dat_brotherinlaw'] = """Sógor|Шурей|Bratr-in-law|Svoger|Brother-in-law|Κουνιάδος|Brother-in-law|Cuñado|Beau-frère|동생 -에서 - 법|जीजाजी|Šurjak|Cognato|義理の兄弟|Brother-in-law|Svoger|Szwagier|Cunhado|Cumnat|Шурин|Svåger|Lanko|姐夫|Шурјак|姐夫|‏صهر‎|Cunyat|Brother-in-law|‏גיס‎|Ipar|Brother-in-tiesību|Svainis|Brat-in-law|Svak|Шурін|Anh em-trong-pháp luật"""
+label['dat_brothersinlaw'] = """Sógorok|Братя-в-закон|Brothers-in-law|Brothers-in-lov|Brothers-in-law|Brothers-in-νόμος|Brothers-in-law|Hermanos en la ley|Beaux-frères|형제 -에서 - 법|भाई दामाद|Braća u zakonu|Fratelli-in-legge|兄弟で、法|Brothers-in-law|Brothers-in-Law|Brothers-in-law|Brothers-in-law|Brothers-in-lege|Братья-в-закон|Brothers-i-lag|Brothers-in-lain|兄弟中的法律|Бротхерс-ин-закон|兄弟中的法律|‏الاخوة في القانون‎|Germans en la llei|Brothers-in-law|‏גיסים‎|Saudara-saudara-dalam-hukum|Brothers-in-tiesību|Broliai-in-law|Brothers-in-law|Brothers-v-zakon|Брати-в-закон|Brothers-in-law"""
+label['dat_daughterinlaw'] = """Meny|Снаха|Dcera-in-law|Svigerdatter|Tochter-in-law|Νύφη|Daughter-in-law|Nuera|Belle-fille|딸이 -에서 - 법|बहू|Snaja|Nuora|義理の娘|Dochter-in-law|Daughter-in-Law|Synowa|Nora|Noră|Невестка|Svärdotter|Daughter-in-lain|媳妇|Снаја|媳婦|‏زوجة الإبن‎|Nora|Anak na babae-sa-batas|‏כלה‎|Perempuan|Meita-in-tiesību|Vēdekla|Dcéra-in-law|Snaha|Невістка|Daughter-in-pháp luật"""
+label['dat_daughtersinlaw'] = """Menyek|Дъщерята-в-закон|Dcery-in-law|Svigerdøtre|Töchter-in-law|Κόρες-το-δίκαιο|Daughters-in-law|Nueras|Belles-filles|딸들이 -에서 - 법|बेटियों दामाद|Snahama|Figlie-in-legge|娘で、法|Dochters-in-law|Døtrene-i-loven|Córki w prawo|Filhas-in-law|Fiice-în-lege|Дочери в закон|Svärdöttrar|Tyttäret-in-lain|媳妇|Снаха|媳婦|‏بنات في القانون‎|Nores|Anak-sa-batas|‏הבנות-in-law‎|Anak perempuan-dalam-hukum|Meitas-in-tiesību|Dukters-in-law|Dcéry-in-law|Snahama|Дочки в закон|Con gái-trong-pháp luật"""
+label['dat_fatherinlaw'] = """Após|Свекър|Otec-in-law|Svigerfar|Vater-in-law|Πεθερός|Father-in-law|Suegro|Beau-père|아버지 -에서 - 법|ससुर|Svekar|Suocero|義父|Vader-in-law|Svigerfar|Teść|Sogro|Socru|Свекор|Svärfar|Appi|岳父|Свекар|岳父|‏حماه‎|Sogre|Ama-sa-batas|‏חותן‎|Ayah-dalam-hukum|Vīratēvs|Uošvis|Otec-in-law|Tast|Свекор|Cha-trong-pháp luật"""
+label['dat_female'] = """nő|женски|žena|hunkøn|weiblich|θηλυκό|female|hembra|femelle|여성|मादा|žensko|femminile|女性|vrouwelijk|kvinne|żeński|fêmea|feminin|женщин|kvinna|nainen|女性|женско|女性|‏أنثى‎|femella|babae|‏נקבה‎|perempuan|sieviete|moteris|žena|ženska|жінок|nữ"""
+label['dat_halfsibling'] = """Mostohatestvér|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Степсиблинг|Stepsibling|‏Stepsibling‎|Stepsibling|Stepsibling|‏Stepsibling‎|Stepsibling|Stepsibling|Stepsibling|Stepsibling|Pastorek|Stepsibling|Stepsibling"""
+label['dat_halfsiblings'] = """Mostohatestvérek|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Степсиблингс|Stepsiblings|‏Stepsiblings‎|Stepsiblings|Stepsiblings|‏Stepsiblings‎|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings|Stepsiblings"""
+label['dat_male'] = """férfi|мъжки|muž|hankøn|männlich|αρσενικό|male|macho|mâle|남성|नर|muško|maschile|男性|mannelijk|mann|męski|macho|masculin|мужчина|male|mies|男性|мушко|男性|‏مالي‎|mascle|lalaki|‏זכר‎|laki-laki|vīrietis|vyras|muž|moški|чоловік|đàn ông"""
+label['dat_motherinlaw'] = """Anyós|Тъща|Matka-in-law|Svigermor|Mutter-in-law|Πεθερά|Mother-in-law|Suegra|Belle-mère|어머니 -에서 - 법|सास|Svekrva|Suocera|姑|Schoonmoeder|Svigermor|Teściowa|Sogra|Soacră|Теща|Svärmor|Anoppi|岳母|СВЕКРВОМ|岳母|‏حماته‎|Sogra|Mother-in-law|‏חותנת‎|Ibu-dalam-hukum|Vīramāte|Uošvė|Matka-in-law|Tašče|Теща|Mother-in-law"""
+label['dat_norelation'] = """Nem rokon|Които не са свързани|Nesouvisejí|Ikke er relateret|Nicht im Zusammenhang|Δεν συνδέονται|Not related|No relacionados con el|Qui ne sont pas liées|안 관련|नहीं संबंधित|Ne odnose|Non connessi|関連はない|Niet gerelateerd|Ikke relatert|Nie związanych|Não relacionada|Nu legate de|Не связанные|Inte är relaterade|Ei liity|不相关|Не односе|不相關|‏لا علاقة‎|No relacionats amb el|Hindi kaugnay|‏לא קשור‎|Tidak terkait|Nav saistīti|Ne, susijusių|Nesúvisia|Ki niso povezani|Не пов'язані|Không liên quan"""
+label['dat_notranslation'] = """A fordítás hiányzik.  Sajnáljuk a kellemetlenséget.|Не преводът е на разположение. Съжаляваме за неудобството.|Č. překlad není k dispozici. Omlouvám se za nepříjemnosti.|Nr. Oversættelsen er til rådighed. Ked af det besvær.|Keine Übersetzung verfügbar ist. Sorry über die Unannehmlichkeiten.|Δεν μετάφραση είναι διαθέσιμη. Συγγνώμη για την ταλαιπωρία.|No translation is available.  Sorry about the inconvenience.|No hay traducción disponible. Perdón por las molestias.|Aucune traduction n'est disponible. Désolé pour ce désagrément.|아니 번역을 사용할 수있습니다. 불편을 끼쳐 죄송합니다.|कोई अनुवाद उपलब्ध है. असुविधा के बारे में क्षमा करें.|Ne prijevod je dostupna. Žao nam je o poteškoćama.|Traduzione non è disponibile. Ci scusiamo per il disagio.|いいえ翻訳は入手可能です。不便申し訳ございません。|Geen vertaling beschikbaar is. Sorry voor het ongemak.|Ingen oversettelse er tilgjengelig. Beklager bryderiet.|Tłumaczenie nie jest dostępne. Przepraszam za tę niedogodność.|Nenhuma tradução está disponível. Desculpe pelo transtorno.|Nu traducerea este disponibilă. Îmi pare rău pentru neplăcerile create.|Нет перевода имеется в наличии. К сожалению по поводу неудобства.|Ingen översättning finns tillgänglig. Ledsen för besväret.|N: o käännös on saatavilla. Anteeksi häiriötä.|没有翻译可用。很抱歉的不便。|Не превод је доступна. Жао нам је о потешкоћама.|沒有翻譯可用。很抱歉的不便。|‏عدم وجود ترجمة متاح. عذرا عن الازعاج.‎|No hi ha traducció disponible. Perdó per les molèsties.|Walang pagsasalin ay magagamit. Paumanhin sa abala.|‏התרגום לא זמין. אנו מצטערים על אי הנוחות.‎|Terjemahan tidak tersedia. Maaf tentang ketidaknyamanan.|No translation ir pieejama. Atvainojiet par neērtībām.|Ne vertimas yra prieinama. Atsiprašome dėl nepatogumų.|Č preklad nie je k dispozícii. Ospravedlňujem sa za nepríjemnosti.|Št prevod je na voljo. Žal mi je zaradi neprijetnosti.|Немає перекладу є в наявності. На жаль з приводу незручності.|Không có dịch hiện có sẵn. Xin lỗi về sự bất tiện."""
+label['dat_sisterinlaw'] = """Sógornő|Зълва|Sestra-in-law|Svigerinde|Sister-in-law|Κουνιάδα|Sister-in-law|Cuñada|Belle-sœur|여동생 -에서 - 법|भाभी|Šogorica|Cognata|義理の姉|Sister-in-law|Svigerinne|Szwagierka|Cunhada|Cumnată|Свояченица|Svägerska|Käly|嫂嫂|Шогорица|嫂嫂|‏أخت‎|Cunyada|Kapatid na babae-sa-batas|‏גיסה‎|Ipar|Māsa-in-tiesību|Brolienė|Sestra-in-law|Šurjakinja|Свояченіца|Em gái-trong-pháp luật"""
+label['dat_sistersinlaw'] = """Sógornők|Сестри-в-закон|Sisters-in-law|Sisters-in-lov|Sisters-in-law|Sisters-in-νόμος|Sisters-in-law|Hermanas en la ley|Sisters-in-law|자매 -에서 - 법|बहनों में कानून|Sestre u zakonu|Suore-in-legge|姉妹で法|Sisters-in-law|Sisters-i-loven|Siostry-w-law|Irmãs-in-law|Surori-în-lege|Сестры-в-закон|Sisters-in-lag|Sisters-in-lain|弟媳|Сестре у закону|弟媳|‏الأخوات في القانون‎|Germanes en la llei|Madre-sa-batas|‏האחיות-in-law‎|Sisters-in-law|Māsas-in-tiesību|Seserys-in-law|Sisters-in-law|Sestre-v-zakon|Сестри-в-закон|Chị em-trong-pháp luật"""
+label['dat_soninlaw'] = """Vej|Зет|Son-in-law|Svigersøn|Son-in-law|Γαμπρός|Son-in-law|Yerno|Son-in-law|아들 -에서 - 법|दामाद|Zet|Figlio-in-legge|義理の息子|Son-in-law|Svigersnn|Zięć|Genro|Ginere|Зять|Svärson|Vävy|女婿|Зет|女婿|‏صهر‎|Gendre|Anak-sa-batas|‏חתן‎|Anak-dalam-hukum|Znots|Žentas|Son-in-law|Zet|Зять|Son-in-law"""
+label['dat_sonsinlaw'] = """Vejek|Синове-в-закон|Sons-in-law|Svigersønner|Sons-in-law|Sons-in-νόμος|Sons-in-law|Hijos en la ley|Sons-in-law|아들 -에서 - 법|दामाद|Sons-in-zakon|Sons-in-legge|息子の法則|Sons-in-law|Sons-i-loven|Synów-w-law|Sons-in-law|Fii-în-lege|Сыновья в закон|Svärsöner|Vävyt|女婿|Сонс-ин-закон|女婿|‏أبناء في القانون‎|Fills en la llei|Anak-sa-batas|‏הבנים-in-law‎|Anak-anak-dalam-hukum|Dēli-in-tiesību|Sons-in-law|Sons-in-law|Sons-v-zakon|А сини до закону|Con trai-trong-pháp luật"""
+label['dat_stepfather'] = """Mostohaapa|Стъпка-баща|Step-otce|Trin-far|Step-Vater|Βήμα-πατέρα|Step-father|Paso-padre|Le beau-père|단계 - 아버지|कदम-पिता|Korak-otac|Step-padre|ステップの父|Step-vader|Trinn-far|Krok-ojciec|Padastro|Pasul-tatal|Шаг-отца|Styvfar|Step-isä|继父|Корак-отац|繼父|‏خطوة والد‎|Pas-pare|Hakbang-ama|‏שלב אב‎|Langkah-ayah|Soli tēvs|Žingsnis po tėvo|Step-otca|Korak oče -|Крок-батька|Bước-cha"""
+label['dat_stepmother'] = """Mostohaanya|Стъпка-майка|Step-matka|Trin-mor|Schritt-Mutter|Βήμα-μητέρα|Step-mother|Paso-madre|La belle-mère;|단계 - 어머니|सौतेली माँ|Korak-majka|Step-madre|ステップの母|Step-moeder|Trinn-mor|Krok-matki|Passo-mãe|Pasul-mama|Шаг-матери|Steg-mor|Step-äiti|继母|Корак-мајка|繼母|‏خطوة الأم‎|Pas-mare|Hakbang-ina|‏צעד אמא‎|Langkah-ibu|Soli mātes|Žingsnis-mama|Step-matka|Step-mama|Крок-матері|Bước-mẹ"""
+label['dat_stepparent'] = """Mostohaszülő|Стъпка родител|Step-rodič|Trin-forælder|Step-Eltern -|Βήμα-μητρική|Step-parent|Padrastro|Beau-parent|단계 - 부모|सौतेली माँ बाप|Korak-roditelj|Step-madre|段階的な親|Stap-ouder|Trinn for foresattes|Krok-rodzic|Passo-mãe|Pasul-mamă|Шаг родителей|Steg förälder|Step-emo|继父母|Корак-родитељ|繼父母|‏خطوة الوالد‎|Padrastre|Hakbang-parent|‏שלב הוריות‎|Langkah-orang tua|Soli mātes|Žingsnis-patronuojanti|Step-rodič|Korak od staršev|Крок батьків|Step-parent"""
+label['dat_stepparents'] = """Mostohaszülők|Стъпка-родители|Step-rodiče|Trin-forældre|Step-Eltern|Βήμα-γονείς|Step-parents|Paso a los padres|Beaux-parents|단계 - 부모님|सौतेली माता पिता|Korak-roditelji|Step-genitori|ステップ両親|Step-ouders|Trinn-foreldre|Krok-rodzice|Padrasto e madrasta|Pasul-părinţi|Шаг родителей|Steg-föräldrar|Step-vanhemmat|继父母|Корак-родитељи|繼父母|‏خطوة بين الوالدين‎|Pas als pares|Hakbang-ang mga magulang|‏צעד ההורים‎|Langkah-orang tua|Soli vecāki|Pamotė / patėvis|Step-rodičia|Mačeho ali očimom|Крок батьків|Bước-cha mẹ"""
+label['dat_unknown'] = """ismeretlen|неизвестно|neznámá|ukendt|unbekannt|άγνωστο|unknown|desconocido|inconnu|알 수없는|अज्ञात|nepoznati|sconosciuto|不明|onbekend|unknown|nieznany|desconhecido|necunoscut|неизвестно|okänd|tuntematon|未知|непознати|未知|‏غير معروف‎|desconegut|hindi kilala|‏לא ידוע‎|Tidak diketahui|nav zināms|nežinomas|neznáma|neznano|невідомо|chưa biết"""
+label['hungaria'] = """Hungária: Egy Honlap Generátor|Полски: уебсайт Generator|Hungária: webové stránky generátor|Hungária: Et websted Generator|Hungária: Eine Website-Generator|Hungária: Μια ιστοσελίδα γεννήτρια|Hungária: A Website Generator|Hungária: Un generador de sitio web|Hungária: Un générateur de site internet|헝가리 : 웹 사이트 생성기|Hungária: एक वेबसाइट जनरेटर|Hungaria: A website generator|Hungária: Un sito web generatore|ハンガリア： Webサイト生成ツール|Hungária: Een Website generatorvermogen|Hungária: Et websted Generator|Hungária: Witryna Generator|Hungária: Um site gerador|Hungária: Un generator de site-ul|Hungaria: веб-сайт генератор|Hungária: En webbplats Generator|Hungária: Web-sivusto generaattori|匈牙利：网站发生器|Хунгариа: А уебсите генератор|匈牙利：網站發生器|‏روماني : موقع على الانترنت مولد‎|Hungaria: Un generador d'lloc web|Hungária: A website Generator|‏הונגריה: אתר אינטרנט גנרטור‎|Hungaria: A website generator|Hungária: A Website ģenerators|Hungįria: puslapis generatorius|Hungária: webové stránky generátor|Hungária: A Spletna stran generator|Hungaria: веб-сайт генератор|Hungaria: Một trang web Máy phát điện"""
+label['lbl_adoption'] = """Örökbefogadás|Приемане|Přijetí|Vedtagelse|Annahme|Έγκριση|Adoption|Aprobación|Adoption|입양|गोद लेने की|Usvajanje|Adozione|養子縁組|Aanneming|Adopsjon|Przyjęcie|Aprovação|Adoptare de|Принятие|Antagande|Hyväksyminen|通过|Усвајање|通過|‏اتخاذ‎|Aprovació|Pag-aampon|‏אימוץ‎|Adopsi|Pieņemšanas|Priėmimas|Prijatie|Sprejetje|Прийняття|Adoption"""
+label['lbl_aka'] = """Más nevek|Други имена|Další názvy|Andre navne|Andere Namen|Άλλες ονομασίες|Other names|Otros nombres|Autres noms|다른 이름|अन्य नाम|Ostali nazivi|Altri nomi|匿名|Andere namen|Andre navn|Inne nazwy|Outros nomes|Alte nume de|Другие названия|Andra namn|Muut nimet|其他名称|Остали називи|其他名稱|‏أسماء أخرى‎|Altres noms|Ibang pangalan|‏שמות אחרים‎|Nama lain|Citi nosaukumi|Kiti vardai, pavardės|Ďalšie názvy|Druga imena|Інші назви|Các tên khác"""
+label['lbl_ancestor'] = """Előd|Прародител|Předek|Anen|Vorfahren|Πρόγονο|Ancestor|Antepasado|Ancêtre|조상|पूर्वज|Prednik|Antenato|祖先|Stamvader|Anen|Przodek|Antepassado|Strămoş|Предок|Förfader|Vainajien|祖先|Предник|祖先|‏الجد‎|Avantpassat|Ninuno|‏Ancestor‎|Leluhur|Priekštecis|Protėvis|Predok|Prednik|Предок|Tổ"""
+label['lbl_ancestors'] = """Elődök|Предци|Ancestors|Forfædre|Vorfahren|Πρόγονοι|Ancestors|Antepasados|Ancêtres|조상|पूर्वजों|Preci|Antenati|先祖|Voorouders|Slekten|Przodków|Ancestrais|Strămoşii|Предков|Förfäder|Esi-isiensä|祖先|Преци|祖先|‏الأجداد‎|Avantpassats|Ancestors|‏אבות קדמונים‎|Nenek moyang|Senči|Ancestors|Ancestors|Prednikov|Предків|Ancestors"""
+label['lbl_aunt'] = """Nagynéne|Леля|Teta|Tante|Tante|Θεία|Aunt|Tía|Tante|숙모|चाची|Tete|Zia|叔母|Tante|Tante|Ciotka|Tia|Matusa|Тетя|Moster|Täti|姨妈|Тете|姨媽|‏عمة‎|Tia|Tiyahin|‏דודה‎|Bibi|Tante|Teta|Teta|Teta|Тітка|Aunt"""
+label['lbl_aunts'] = """Nagynénék|Aunts|Tety|Tanter|Tanten|Θείες|Aunts|Tías|Tantes|아줌마|चाची|Tete|Zie|叔母|Tantes|Tanter|Ciotkom|Tias|Matusile|Тетки|Mostrar|Tädit|姐|Тете|姐|‏العمات‎|Tías|Aunts|‏Aunts‎|Bibi|Tantes|Tetas|Tety|Tête|Тітки|Aunts"""
+label['lbl_baptism'] = """Keresztelés|Кръщение|Křest|Dåb|Taufe|Βάπτισμα|Baptism|Bautismo|Baptême|침례|बपतिस्मा|Krštenje|Battesimo|洗礼|Doop|Dåp|Chrzest|Batismo|Botez|Крещение|Dop|Kaste|洗礼|Покрстувауе|洗禮|‏معمودية‎|Baptisme|Binyag|‏הטבילה‎|Pembaptisan|Baptism|Krikštynos|Krst|Krst|Хрещення|Baptism"""
+label['lbl_birth'] = """Született|Роден|Narozený|Født|Geboren|Γεννημένος|Born|Nacido|Né|타고난|जन्म लेना|Roditi se|Nato|生まれつきの|Geboren|Født|Urodzony|Nascer|Născut|Родился|Född|Syntynyt|天生的|Роди се|天生的|‏مولود‎|Nascut|Isinilang|‏נולד‎|Dilahirkan|Dzimis|Gimęs|Narodený|Rojen|Народився|Sinh ra"""
+label['lbl_child'] = """Gyermek|Дете|Dítě|Barn|Kind|Παιδί|Child|Niño pequeño|Enfant|아이|बच्चा|Dijete|Bambino|子供|Kind|Barn|Dziecko|Criança|Copil|Ребенка|Barn|Lapsi|孩子|Дете|孩子|‏طفل‎|Nen petit|Bata / anak|‏ילד‎|Anak|Bērns|Vaikas|Dieťa|Otrok|Дитини|Đứa trẻ"""
+label['lbl_children'] = """Gyermekek|Деца|Děti|Børn|Kinder|Παιδιά|Children|Niños pequeños|Enfants|아이|बच्चे|Djeca|Bambini|子供たち|Kinderen|Barn|Dzieci|Crianças|Copii|Дети|Barn|Lapset|孩子们|Деца|孩子們|‏أطفال‎|Nens petits|Mga bata / mga anak|‏ילדים‎|Anak-anak|Bērni|Vaikai|Deti|Otroci|Діти|Bọn trẻ"""
+label['lbl_closecousin'] = """Közeli unokatestvér|Затвори братовчед|Zavřít bratranec|Luk fætter|Schließen Sie Cousin|Κλείσιμο εξάδελφος|Close cousin|Cierre primo|Proche cousin|닫기 사촌|Close चचेरा भाई|Zatvori bratić|Chiudi cugino|近くのいとこ|Sluiten neef|Lukk fetter|Zamknij kuzyn|Fechar primo|Inchide vărul|Закрыть двоюродного брата|Stäng kusin|Sulje serkku|关闭表妹|Затвори Братић|關閉表妹|‏وثيقة ابن عم‎|Tancament cosí|Isara ang pinsan|‏סגור את בן דודו‎|Tutup sepupu|Aizvērt brālēns|Uždaryti pusbrolis|Zavrieť bratranec|Zapri sestrična|Закрити двоюрідного брата|Close cousin"""
+label['lbl_closecousins'] = """Közeli unokatestvérek|Затвори братовчеди|Zavřít bratranců|Luk fætre|Schließen Cousins|Κλείστε τα ξαδέλφια|Close cousins|Cierre primos|Proches cousins|가까운 사촌|Close चचेरे|Zatvori rođaci|Chiudi cugini|閉じるいとこ|Nauwe verwanten|Lukk Cousins|Zamknij cousins|Fechar primos|Inchide veri|Закрыть кузены|Stäng kusiner|Sulje serkut|关闭表兄弟|Затвори рођаци|關閉表兄弟|‏وثيقة وابناء العم‎|Tancament cosins|Close cousins|‏סגור דודיו‎|Tutup cousins|Aizvērt brālēniem|Uždaryti pusbroliai|Zavrieť bratranci|Zapri bratranci|Закрити кузени|Close cousins"""
+label['lbl_cousin'] = """Unokatestvér|Братовчед|Bratranec / sestřenice|Fætter|Cousin|Εξάδελφος|Cousin|Primo|Cousin|사촌|चचेरा|Bratić|Cugino|いとこ|Neef|Søskenbarn|Kuzyn|Primo|Văr|Двоюродный брат|Kusin|Serkku|表兄弟姊妹|Братић|表兄弟姊妹|‏ابن العم‎|Primo|Pinsan|‏בן דוד‎|Sepupu|Brālēns|Pusbrolis|Bratranec / sestranice|Bratranec|Двоюрідний брат|Anh / em họ"""
+label['lbl_cousins'] = """Unokatestvérek|Братовчеди|Bratranci|Fætre|Cousins|Ξαδέλφια|Cousins|Primos|Cousins|사촌|चचेरे|Cousins|Cugini|いとこ|Cousins|Cousins|Kuzyni|Cousins|Veri|Родственники|Kusiner|Serkut|堂兄弟|Цоусинс|堂兄弟|‏أبناء العم‎|Cosins|Cousins|‏בני דודיו‎|Cousins|Brālēniem|Pusbroliai|Bratranci|Bratranci|Родичі|Cousins"""
+label['lbl_death'] = """Elhalálozott|Починал|Zemřel|Døde|Gestorben|Πέθανε|Died|Murió|Mort|사망|मर गया|Umro|Morto|死亡|Overleden|Døde|Zmarł|Faleceu|A murit|Умер|Dog|Kuoli|死亡|Умро|死亡|‏توفي‎|Va morir|Namatay|‏נפטר‎|Meninggal|Miris|Mirė|Zomrel|Umrl|Помер|Chết"""
+label['lbl_descendent'] = """Leszármazottak|Descendents|Potomci|Efterkommere|Nachkommen|Απογόνους|Descendents|Descendientes|Descendants|후손|Descendents|Potomaka|Discendenti|子孫|Afstammelingen|Etterkommere|Potomkowie|Descendentes|Descendents|Потомков|Ättlingar|Kielenoppimismahdollisuuksia|后裔|Потомака|後裔|‏السليلون‎|Descendents|Descendents|‏Descendents‎|Descendents|Descendents|Kryptimi|Potomkovia|Potomci|Нащадків|Descendents"""
+label['lbl_descendents'] = """Leszármazottak|Descendents|Potomci|Efterkommere|Nachkommen|Απογόνους|Descendents|Descendientes|Descendants|후손|Descendents|Potomaka|Discendenti|子孫|Afstammelingen|Etterkommere|Potomkowie|Descendentes|Descendents|Потомков|Ättlingar|Kielenoppimismahdollisuuksia|后裔|Потомака|後裔|‏السليلون‎|Descendents|Descendents|‏Descendents‎|Descendents|Descendents|Kryptimi|Potomkovia|Potomci|Нащадків|Descendents"""
+label['lbl_distantcousin'] = """Távoli unokatestvér|Далечни братовчеди|Vzdálení bratranci|Fjern fætter|Distant Cousin|Μακρινή ξαδέρφη|Distant cousin|Primo lejano|Lointain cousin|먼 사촌|दूर के चचेरे भाई|Daleki rođak|Lontano cugino|遠戚|Verre neef|Distant fetter|Odległego kuzyna|Primo afastado|Văr de vanzare la distanta|Дальний родственник|Avlägsen kusin|Kaukainen serkku|远亲|Далеки рођак|遠親|‏ابن عم بعيد‎|Cosí llunyà|Malayo pinsan|‏בן דוד רחוק‎|Jauh sepupu|Tālu brālēns|Tolima pusbrolis|Vzdialení bratranci|Daljni bratranec|Далекий родич|Distant cousin"""
+label['lbl_distantcousins'] = """Távoli unokatestvérek|Далечни братовчеди|Vzdálení bratranci|Distant fætre|Ferne Cousins|Μακριά ξαδέλφια|Distant cousins|Primos lejanos|Les cousins éloignés|먼 사촌|दूर के चचेरे|Daleki rođaci|I cugini lontani|血族の罠|Verre neven|Distant Cousins|Dalecy Kuzyni|Os primos distantes|Veri de vanzare la distanta|Дистанционное двоюродных братьев|Avlägsna kusiner|Kaukaiset serkut|遥远的表兄弟|Далеки рођаци|遙遠的表兄弟|‏وابناء العم البعيد‎|Cosins llunyans|Malayo cousins|‏בן דוד רחוק‎|Jauh cousins|Tālu brālēniem|Distant Cousins|Vzdialení bratranci|Daljni bratranci|Дистанційне двоюрідних братів|Distant cousins"""
+label['lbl_event'] = """Esemény|Събитие|Událost|Event|Event|Εκδήλωση|Event|Evento|L'événement|이벤트|घटना|Događaj|Evento|イベント|Event|Hendelse|Zdarzenie|Evento|Eveniment|Событие|Event|Tapahtuma|事件|Догађај|事件|‏حالة‎|Esdeveniment|Kaganapan|‏אירוע‎|Acara|Pasākums|Įvykis|Udalosť|Dogodek|Подія|Sự kiện"""
+label['lbl_events'] = """Események|Събития|Události|Events|Veranstaltungen|Εκδηλώσεις|Events|Eventos|Evénements|이벤트|घटनाएँ|Događanja|Eventi|イベント|Evenementen|Arrangementer|Wydarzenia|Eventos|Evenimente|События|Evenemang|Tapahtumat|活动|Догађања|活動|‏الأحداث‎|Esdeveniments|Mga kaganapan|‏אירועים‎|Acara|Notikumi|Renginiai|Udalosti|Dogodki|Події|Sự kiện"""
+label['lbl_exhusband'] = """Volt férj|Бивш съпруг|Ex-manžel|Ex-Husband|Ex-Ehemann|Πρώην άντρας|Ex-Husband|Ex-marido|Ex-mari|전직 - 남편|पूर्व पति|Bivši muž|Ex-marito|前夫|Ex-man|Ex-Husband|Ex-mąż|Ex-Marido|Soţ ex -|Бывший муж|Ex-make|Ex-aviomies|前夫|Бивши муж|前夫|‏زوجها السابق‎|Ex-marit|Ex-asawang lalaki|‏לשעבר בעל‎|Mantan Suami|Ex-vīrs|Buvęs vyras|Ex-manžel|Bivši mož|Колишній чоловік|Ex-Husband"""
+label['lbl_exhusbands'] = """Volt férjek|Ex-Мъже|Ex-Muži|Ex-Ægtefæller|Ex-Ehemänner|Ex-Οι σύζυγοι|Ex-Husbands|Ex-esposos|Ex-mari|전직 - 남편|पूर्व पति|Ex-Muževi|Ex-mariti|元夫|Ex-mannen|Ex-Ektemannen|Ex-Mężowie|Ex-Maridos|Soţii ex -|Бывшие мужья|Ex-Makar|Ex-aviomiehiä|前夫|Екс-Мужеви|前夫|‏أزواجهن السابقين‎|Ex-marits|Ex-asawa|‏בעלים לשעבר‎|Ex-Suami|Ex-vīru|Ex-Vyrai|Ex-Muži|Ex-Muževi|Колишні чоловіки|Ex-chồng"""
+label['lbl_expartner'] = """Volt élettárs|Ex-Партньор|Ex-Partner|Ex-Partner|Ex-Partner|Ex-Partner|Ex-Partner|Ex-Partner|Ex-partenaire|전직 - 파트너|पूर्व साझीदार|Ex-Partner|Ex-partner|かつてのパートナー|Ex-Partner|Ex-Partner|Ex-Partner|Ex-Sócio|Ex-Partner|Экс-партнер|Ex-Partner|Ex-Partner|前合伙人|Екс-Партнер|前合夥人|‏الشريك السابق‎|Ex-Partner|Ex-Partner|‏לשעבר שותף‎|Ex-Mitra|Bijušie partneris|Ex Partneris|Ex-Partner|Ex-Partner|Екс-партнер|Ex-Đối tác"""
+label['lbl_expartners'] = """Volt élettársak|Ex-Партньори|Ex-Partneři|Ex-Partners|Ex-Partner|Ex-Συνεργάτες|Ex-Partners|Ex-Socios|Ex-Partenaires|전직 - 파트너|पूर्व पार्टनर्स|Ex-Partneri|Ex-partner|元パートナー|Ex-Partners|Ex-partnere|Ex-Partnerzy|Ex-Sócios|Ex-Parteneri|Экс-партнеры|Ex-partner|Ex-kumppanit|当然合作伙伴|Екс-Партнери|當然合作夥伴|‏الشركاء السابقين‎|Ex-Socis|Ex-Partners|‏לשעבר שותפים‎|Mantan Mitra|Ex-Partners|Ex Partneriai|Ex-Partneri|Ex-Partnerji|Екс-партнери|Ex-Đối tác"""
+label['lbl_exwife'] = """Volt feleség|Бивша жена|Ex-manželka|Ex-kone|Ex-Ehefrau|Πρώην γυναίκα|Ex-Wife|Ex-Esposa|Ex-femme|전직 - 마누라|पहली पत्नी|Ex-supruge|Ex-moglie|別れた妻|Ex-Wife|Ex-Wife|Ex-żona|Ex-Mulher|Ex-So|Бывшая жена|Ex-fru|Ex-vaimo|前妻|Екс-супруге|前妻|‏الزوجة السابقة‎|Ex-Esposa|Ex-asawang babae|‏אישה לשעבר‎|Ex-Isteri|Ex-sieva|Buvusi žmona|Ex-manželka|Ex-Soproga|Колишня дружина|Ex-Vợ"""
+label['lbl_exwives'] = """Volt feleségek|Ex-Жени|Ex-Wives|Ex-Hustruer|Ex-Ehefrauen|Ex-Σύζυγοι|Ex-Wives|Ex-Esposas|Ex-épouses|전직 - 아내|पूर्व पत्नी|Ex-Žene|Ex-mogli|元妻|Ex-Wives|Ex-Wives|Ex-Wives|Ex-Esposas|Neveste ex -|Бывшие жены|Ex-Wives|Ex-vaimot|前妻|Екс-Жене|前妻|‏الزوجات السابقات‎|Ex-Esposes|Ex-Wives|‏לשעבר נשים‎|Ex-Istri|Ex-sievas|Ex Žmonos|Ex-Wives|Ex-žene|Колишні дружини|Ex-vợ"""
+label['lbl_firstcousin'] = """Első unokatestvér|Първи братовчед|První sestřenice|Første fætter|Erste Cousin|Πρώτος εξάδελφος|First cousin|En primer lugar primo|Première cousin|첫 조카|चचेरा भाई|Prvi rođak|Prima cugino|いとこ|Eerste neef|Først fetter|Pierwszy kuzyn|Primo|Prima vărul|Двоюродная сестра|Första kusin|Serkku|第一表妹|Први рођак|第一表妹|‏الأول ابن عم‎|En primer lloc cosí|Pinsan-buo|‏בן דוד ראשון‎|Saudara sepupu|Pirmās brālēns|Pirmasis pusbrolis|Prvá sestranice|Prvi bratranec|Двоюрідна сестра|First cousin"""
+label['lbl_firstcousins'] = """Első unokatestvérek|Първи братовчеди|První sestřenice|Første fætre|Erste Cousins|Πρώτα ξαδέλφια|First cousins|En primer lugar primos|Cousins germains|첫 번째 사촌|पहली चचेरे|Prvi rođaci|Prima cugini|いとこ|Eerste neven|Først Cousins|Pierwszy cousins|Primeira primos|Prima veri|Первый двоюродных братьев|Första kusiner|Ensimmäinen serkut|第一堂兄妹|Први рођаци|第一堂兄妹|‏أول أبناء عم‎|En primer lloc cosins|Unang cousins|‏ראשון דודיו‎|Pertama cousins|Pirmās brālēniem|Pirmasis pusbroliai|Prvá sestranice|Prva bratranci|Перший двоюрідних братів|Đầu tiên cousins"""
+label['lbl_gender'] = """Nem|Пол|Pohlaví|Køn|Geschlecht|Γένος|Gender|Género|Sexe|성별|लिंग|Spol|Genere|性|Geslacht|Kjønn|Płeć|Gênero|Gen|Пола|Kön|Sukupuoli|性别|Спол|性別|‏النوع‎|Gènere|Kasarian|‏מגדר‎|Jender|Dzimums|Lytis|Pohlavie|Spol|Статі|Giống"""
+label['lbl_grandparent'] = """Nagyszülő|Баба или дядо|Prarodič|Bedsteforælder|Großeltern|Παππούς|Grandparent|Abuelo|Grands-parents|조부모|Grandparent|Baba ili deda|Nonno|祖父母|Opa|Bestemor|Dziadków|Avós|Bunic|Бабушка или дедушка|Farförälder|Isovanhemmistaan|祖父母|Баба или деда|祖父母|‏الجد‎|Avi|Nuno|‏סבא או סבתא‎|Eyang|Vecvecāku|Seneliai|Starý rodič|Stari|Бабуся або дідусь|Ông bà"""
+label['lbl_grandparents'] = """Nagyszülők|Баба и дядо|Prarodiče|Bedsteforældre|Großeltern|Παππούδες|Grandparents|Los abuelos|Les grands-parents|조부모|दादा और नानी|Djed i baka|Nonni|祖父母|Grootouders|Besteforeldre|Dziadkowie|Avós|Bunici|Дедушка и бабушка|Morföräldrar|Isovanhemmat|祖父母|Дјед и бака|祖父母|‏الأجداد‎|Els avis|Grandparents|‏סבא וסבתא‎|Kakek neneknya|Vecvecāki|Seneliai|Starí rodičia|Stari starši|Дідусь і бабуся|Ông bà"""
+label['lbl_husband'] = """Férj|Съпруг|Manžel|Mand|Ehemann|Σύζυγος|Husband|Esposo|Mari|남편|पति|Suprug|Marito|夫|Echtgenoot|Mann|Mąż|Marido|Soţ|Муж|Man|Aviomies|丈夫|Супруг|丈夫|‏زوج‎|Espòs|Asawang lalaki|‏בעל‎|Suami|Vīrs|Vyras|Manžel|Mož|Чоловік|Chồng"""
+label['lbl_nephew'] = """Unokaöccs|Племенник|Synovec|Nephew|Nephew|Nephew|Nephew|Sobrino|Nephew|조카|भतीजा|Nećak|Nipote|甥|Nephew|Nevø|Siostrzeniec|Sobrinho|Nepotul|Племянник|Nephew|Veljenpoika|侄子|Нећак|侄子|‏إبن الأخ‎|Nebot|Pamangking lalaki|‏האחיין‎|Keponakan|Brāļadēlu|Sūnėnas|Synovec|Nečak|Племінник|Nephew"""
+label['lbl_nephews'] = """Unokaöcsék|Внуци|Synovci|Nevøer|Neffen|Ανήψια|Nephews|Sobrinos|Neveux|조카|भांजे|Nephews|Nipoti|甥|Neefjes|Nephews|Bratanków|Sobrinhos|Nepotii|Племянники|Brorsöner|Veljen|侄子|Непхеус|侄子|‏أبناء الأخ‎|Nebots|Nephews|‏האחיינים‎|Nephews|Brāļa|Nephews|Synovcov|Nečake|Племінники|Nephews"""
+label['lbl_niece'] = """Unokahúg|Племенница|Neteř|Niece|Nichte|Ανιψιά|Niece|Sobrina|Nièce|조카|भतीजी|Nećakinja|Nipote|姪|Nichtje|Niese|Siostrzenica|Sobrinha|Nepoată|Племянница|Systerdotter|Veljentytär|侄女|Нећакиња|侄女|‏أبنة الأخت‎|Neboda|Pamangking babae|‏בת אח‎|Keponakan|Brāļameitu|Dukterėčia|Neter|Nečakinja|Племінниця|Niece"""
+label['lbl_nieceandnephew'] = """Unokahúg és Unokaöccs|Племенница и племенник|Neteř a synovec|Niece og nevø|Nichte und Neffe|Ανηψιά και Nephew|Niece and Nephew|Sobrino y sobrina|Nièce et neveu|조카와 조카는|भतीजी और भाँजे|Nećakinja i nećak|Nipote e nipote|姪と甥|Nichtje en Nephew|Niese og Nephew|Siostrzenica i siostrzeniec|Sobrinha e Nephew|Nepoată şi nepotul|Племянницы и племянника|Systerdotter och Nephew|Veljentytär ja Nephew|侄女和侄子|Нећакиња и нећак|侄女和侄子|‏بنت أخت وابن اخيه‎|Nebot i neboda|Pamangking babae at pamangking lalaki|‏בת אח ואת האחיין‎|Keponakan perempuan dan Nephew|Māsasmeita un māsasdēls|Dukterėčia ir nephew|Neter a synovec|Nečakinja in nečak|Племінниці і племінника|Niece và nephew"""
+label['lbl_nieceandnephews'] = """Unokahúg és Unokaöcsék|Племенница и внуци|Neteří a synovců|Niece og nevøer|Nichte und Neffen|Ανηψιά και τα ανήψια|Niece and Nephews|Sobrinos y sobrina|Neveux et nièce|조카와 조카|भतीजी और भांजे|Nećakinja i Nephews|Nipote e nipoti|姪と甥|Nichtje en neefjes|Niese og Nephews|Siostrzenica i bratanków|Sobrinhos e sobrinhas|Nepoată şi nepotii|Племянницы и племянники|Systerdotter och brorsöner|Veljentytär ja veljen|侄女和侄子|Нећакиња и Непхеус|侄女和侄子|‏أبنة الأخت وأبناء الأخ‎|Nebots i neboda|Pamangking babae at Nephews|‏בת אח ו האחיינים‎|Keponakan perempuan dan Nephews|Brāļameitu un brāļa|Dukterėčia ir Nephews|Neterí a synovcov|Nečakinja in nečake|Племінниці і племінники|Niece và Nephews"""
+label['lbl_nieces'] = """Unokahugok|Nieces|Neteře|Nieces|Nichten|Nieces|Nieces|Sobrinas|Nièces|조카|Nieces|Nieces|Nipotine|Nieces|Nichten|Nieser|Nieces|Sobrinhas|Nieces|Племянницы|Brorsdöttrar|Tai sisarenlapset|侄女|Ниецес|侄女|‏بنات الأخت‎|Nebodes|Nieces|‏Nieces‎|Nieces|Māsas bērni|Nieces|Netere|Nieces|Племінниці|Nieces"""
+label['lbl_niecesandnephew'] = """Unokahugok és Unokaöccs|Nieces и племенник|Neteře a synovce|Nieces og Nephew|Nichten und Nephew|Nieces και Nephew|Nieces and Nephew|Sobrinas y sobrino|Nièces et neveu|조카와 조카는|Nieces और भाँजे|Nieces i nećak|Nipotine e nipote|Niecesと甥|Nichten en Nephew|Nieser og Nephew|Nieces i bratanek|Sobrinhas e Nephew|Nieces şi nepotul|Племянницы и племянника|Syskonbarn och syskonbarn|Tai sisarenlapset ja Nephew|侄女和侄子|Ниецес и нећак|侄女和侄子|‏إبن الأخ وبنات الأخت‎|Nebodes i nebot|Nieces at pamangking lalaki|‏Nieces ואת האחיין‎|Nieces dan Nephew|Māsas bērni un brāļadēlu|Nieces ir nephew|Netere a synovcov|Nieces in nephew|Племінниці і племінника|Nieces và nephew"""
+label['lbl_niecesandnephews'] = """Unokahugok és Unokaöcsék|Nieces и внуци|Synovci a neteře|Nieces og nevøer|Nichten und Neffen|Nieces και τα ανήψια|Nieces and Nephews|Sobrinas y sobrinos|Neveux et nièces|조카 녀석 들에게나|Nieces और भांजे|Nieces i Nephews|Nipotine e nipoti|Niecesと甥|Nichten en neven|Nieser og Nephews|Nieces i bratanków|Sobrinhos e sobrinhas|Nieces si nepotii|Племянницы и племянники|Syskonbarn och brorsöner|Tai sisarenlapset ja veljen|侄子和侄女|Ниецес и Непхеус|侄子和侄女|‏بنات الأخت وأبناء الأخ‎|Nebodes i nebots|Nieces at Nephews|‏Nieces ו האחיינים‎|Nieces dan Nephews|Māsas bērni un brāļa|Nieces ir Nephews|Synovcov a netere|Nieces in nečake|Племінниці і племінники|Nieces và Nephews"""
+label['lbl_note'] = """Jegyzet|Бележка|Poznámka:|Note|Hinweis:|Σημείωση|Note|Nota|Note|참고|ध्यान दें|Napomena|Nota|注記|Opmerking|Obs!|Uwaga|Nota|Notă|К сведению|Obs!|Huomautus|注意：|Напомена|注意：|‏ملاحظة‎|Nota|Tandaan|‏הערה‎|Catatan|Piezīme|Pastaba|Poznámka:|Opomba|До уваги|Lưu ý"""
+label['lbl_notes'] = """Jegyzetek|Бележки|Poznámky|Noter|Stellt fest,|Σημειώσεις|Notes|Notas|Notes|메모|नोट्स|Napomene|Note|ノート|Notes|Merknader|Zauważa,|Notas|Note|Примечания|Noter|Huomautuksia|注|Напомене|注|‏ملاحظات‎|Notes|Notes|‏הערות‎|Catatan|Konstatē,|Pastabos|Poznámky|Opombe|Примітки|Ghi chú"""
+label['lbl_parent'] = """Szülő|Родител|Rodič|Moderselskab|Eltern -|Μητρική|Parent|Padres|Parent|부모|जनक|U sastavu|Capogruppo|親|Parent|Overordnet|Rodzic|Parent|Mamă|Родитель|Förälder|Emo|母公司|У саставу|母公司|‏الوالدين‎|Pares|Magulang|‏ההורה‎|Orang tua|Mātes|Tėvų|Rodič|Matično podjetje|Батько|Cha mẹ"""
+label['lbl_parents'] = """Szülők|Родители|Rodiče|Forældre|Eltern|Γονείς|Parents|Los padres|Les parents|부모|माता पिता|Roditelji|Genitori|両親|Ouders|Foreldre|Rodzice|Pais|Părinţii|Родители|Föräldrar|Vanhemmat|家长|Родитељи|家長|‏الآباء‎|Els pares|Mga magulang|‏הורים‎|Orang tua|Vecāki|Tėvams|Rodičia|Starši|Батьки|Phụ huynh"""
+label['lbl_partner'] = """Élettárs|Партньор|Partner|Partner|Partner|Εταιρικά|Partner|Socio|Partenaire|파트너|भागीदार|Partner|Partner|パートナー|Partner|Partner|Partner|Parceiro|Partener|Партнер|Partner|Partner|合作伙伴|Партнер|合作夥伴|‏شريك‎|Soci|Partner|‏שותפים‎|Mitra|Partneris|Partneris|Partner|Partner|Партнер|Đối tác"""
+label['lbl_partners'] = """Élettársak|Партньори|Partneři|Partnere|Partner|Συνεργάτες|Partners|Socios|Partenaires|파트너|भागीदार|Partneri|Partner|パートナー|Partners|Partnere|Partnerzy|Parceiros|Parteneri|Партнеры|Partners|Yhteistyökumppanit|合作伙伴|Партнери|合作夥伴|‏شركاء‎|Socis|Partners|‏שותפים‎|Mitra|Partners|Partneriai|Partneri|Partnerji|Партнери|Đối tác"""
+label['lbl_reference'] = """Referencia|Препратка|Reference|Reference|Referenz|Αναφορά|Reference|Referencia|Référence|참조|संदर्भ|Reference|Codice|参照|Referentie|Referanse|Nr referencyjny|Referência|Referinţă|Ссылка|Referens|Viitetiedot|参考|Референце|參考|‏إشارة‎|Referència|Reference|‏Reference‎|Referensi|Atsauce|Nuoroda|Reference|Sklicevanje|Посилання|Tham khảo"""
+label['lbl_references'] = """Referenciák|Препратки|Odkazy|Referencer|Referenzen|Παραπομπές|References|Referencias|Références|참고 문헌|संदर्भ|Reference|Riferimenti|参照|Referenties|Referanser|Referencje|Referências|Referinţe|Ссылки|Referenser|Viitteet|参考文献|Референце|參考文獻|‏الإشارات‎|Referències|References|‏הפניות‎|Referensi|Atsauces|Nuorodos|Odkazy|Literatura|Посилання|Tham khảo"""
+label['lbl_report'] = """Jelentés|Доклад|Zpráva|Rapport|Bericht|Έκθεση|Report|Informe|Rapport|보고서|रिपोर्ट|Izvješće|Relazione|報告書|Verslag|Rapporter|Sprawozdanie|Relatório|Raport|Доклад|Rapport|Raportti|报告|Извештај|報告|‏تقرير‎|Informe|Ulat|‏דווח‎|Laporan|Ziņojums|Pranešimas|Správa|Poročilo|Доповідь|Thông báo"""
+label['lbl_reports'] = """Jelentések|Доклади|Zprávy|Rapporter|Berichte|Εκθέσεις|Reports|Informes|Rapports|리포트|रिपोर्ट|Izvješća|Rapporti|レポート|Verslagen|Rapporter|Raporty|Relatórios|Rapoarte|Отчеты|Rapporter|Raportit|报告|Извештаји|報告|‏تقارير‎|Informes|Ulat|‏דו"ח ות‎|Laporan|Ziņojumi|Ataskaitos|Správy|Poročila|Звіти|Báo cáo"""
+label['lbl_residence'] = """Lakóhely|Местожителство|Residence|Residence|Wohnort|Residence|Residence|Residencia|Résidence|레지던스|निवास|Residence|Residence|レジデンス|Residence|Bosted|Zamieszkania|Residência|REZIDENŢĂ|Проживание|Residence|Asuinpaikka|住宅|Ресиденце|住宅|‏سكن‎|Residència|Paninirahan|‏מגורים‎|Asrama|Dzīvesvieta|Rezidencija|Residence|Prebivališča|Проживання|Cư trú"""
+label['lbl_sibling'] = """Testvér|Сестра|Sourozenec|Sibling|Geschwister|Αδελφή|Sibling|Parentesco|Sibling|형제간|सहोदर|Polubrat|Parentela|兄弟|Verwant|Slektningen|Rodzeństwo|Irmão|Sibling|Родной брат|Syskon|Sisarus|兄弟|Полубрат|兄弟|‏الشقيق‎|Parentiu|Kapatid|‏אח או אחות‎|Saudara kandung|Brālis|Sesuo|Súrodenec|Brat|Рідний брат|A / C / E"""
+label['lbl_siblings'] = """Testvérek|Деца|Sourozenci|Søskende|Geschwister|Αδέλφια|Siblings|Los hermanos|Les frères et sœurs|형제|भाई बहन|Siblings|Fratelli|兄弟姉妹|Broers en zusters|Søsken|Rodzeństwo|Irmãos|Fraţi cu un părinte comun|Родные братья и сестры|Syskon|Sisarukset|兄弟姐妹|Сиблингс|兄弟姐妹|‏الأشقاء‎|Els germans|Kapatid|‏האחים והאחיות‎|Saudara|Vecvecākus|Broliai ir seserys|Súrodenci|Bratje in sestre|Рідні брати і сестри|Thân"""
+label['lbl_source'] = """Forrás|Източник|Zdroj|Kilde|Quelle|Πηγή|Source|Fuente|Source|근원|स्रोत|Izvor|Origine|源泉|Bron|Kilde|Źródło|Fonte|Sursă|Источник|Källa|Lähde|来源|Извор|來源|‏مصدر‎|Font|Pinagmulan|‏מקור‎|Sumber|Avots|Šaltinis|Zdroj|Vir|Джерело|Nguồn"""
+label['lbl_sourcereference'] = """Forrás Referencia|Източник Референция|Zdroj Reference|Kilde Reference|Quelle Referenz|Πηγή Αναφορά|Source Reference|Fuente de referencia|Source de référence|소스 레퍼런스|स्रोत संदर्भ|Izvor Reference|Fonte di riferimento|ソースリファレンス|Bron Referentie|Kilde Referanse|Źródło referencyjny|Fonte Referência|Sursa de Referinţă|Источник Ссылка|Källa Referens|Lähde Viite|来源参考|Извор Референце|來源參考|‏مصدر المراجع‎|Font de referència|Source Reference|‏מקור הפניה‎|Sumber Referensi|Avots Atsauce|Šaltinis Nuoroda|Zdroj Referencia|Vir Reference|Джерело Посилання|Nguồn tham khảo"""
+label['lbl_sourcereferences'] = """Forrás Referenciák|Източник Препратки|Zdroj Odkazy|Kilde Referencer|Quelle Referenzen|Πηγή Παραπομπές|Source References|Fuente Referencias|Source Références|소스 참조|स्रोत संदर्भ|Izvor Reference|Fonte Riferimenti|ソース参照|Bron Referenties|Kilde Referanser|Źródło Referencje|Fonte Referências|Sursa Referinţe|Источник литературы|Källa Referenser|Lähde Viitteet|来源参考|Извор Референце|來源參考|‏مصدر المراجع‎|Font Referències|Source References|‏מקור הפניות‎|Sumber Referensi|Avots Atsauces|Šaltinis Nuorodos|Zdroj Odkazy|Vir Literatura|Джерело літератури|Nguồn tham khảo"""
+label['lbl_sources'] = """Források|Източници|Zdroje|Kilder|Quellen|Πηγές|Sources|Fuentes|Sources|출처|सूत्रों का कहना है|Izvori|Fonti|ソース|Bronnen|Kilder|Źródła|Fontes|Surse|Источники|Källor|Lähteet|来源|Извори|來源|‏المصادر‎|Fonts|Pinagkukunan|‏מקורות‎|Sumber|Avoti|Šaltiniai|Zdroje|Viri|Джерела|Nguồn"""
+label['lbl_uncle'] = """Nagybátya|Чичо|Strýček|Onkel|Uncle|Θείος|Uncle|Tío|Oncle|삼촌|चाचा|Uncle|Zio|叔父|Oom|Onkel|Wuj|Tio|Unchiul|Дядя|Farbror|Setä|叔叔|Унцле|叔叔|‏العم‎|Oncle|Tiyuhin|‏הדוד‎|Paman|Uncle|Dėdė|Strýcek|Stric|Дядько|Bác"""
+label['lbl_uncleandaunt'] = """Nagybátya és Nagynéne|Чичо и леля|Strýc a teta|Onkel og tante|Onkel und Tante|Ο θείος και η θεία|Uncle and Aunt|El tío y la tía|Oncle et sa tante|삼촌과 숙모|चाचा और चाची|Uncle i tete|Zio e la zia|叔父と叔母|Oom en tante|Onkel og tante|Ciocia i wujek|O tio e tia|Unchiul şi mătuşa|Дядя и тетя|Farbror och faster|Setä ja täti|叔叔和阿姨|Унцле и тете|叔叔和阿姨|‏العم والعمة‎|L'oncle i la tia|Tiyuhin at tiyahin|‏הדוד ואת דודה‎|Paman dan Aunt|Tēvoci un tanti|Dėdė ir teta|Strýc a teta|Stric in Teta|Дядько та тітка|Bác và aunt"""
+label['lbl_uncleandaunts'] = """Nagybátya és Nagynénék|Чичо и Aunts|Strýček a Tety|Onkel og tanter|Onkel und Tanten|Ο θείος και θείες|Uncle and Aunts|Tío y tías|Oncle et tantes|삼촌과 숙모|चाचा और चाची|Uncle i tete|Zio e zie|叔父と叔母|Oom en tantes|Onkel og tanter|Wuj i ciotkom|Tios e tias|Unchiul şi matusile|Дяди и тети|Farbror och mostrar|Setä ja tädit|叔叔和姑姑|Унцле и тете|叔叔和姑姑|‏العم والعمات‎|Oncle i tietes|Tiyuhin at Aunts|‏הדוד ואת Aunts‎|Paman dan bibi|Tēvoci un tantes|Dėdė ir tetas|Strýcek a tety|Stric in tête|Дядьки та тітки|Bác và Aunts"""
+label['lbl_uncles'] = """Nagybátyák|Чичовци|Strýčkové|Onkler|Onkel|Θείους|Uncles|Tíos|Oncles|삼촌|मामा|Uncles|Zii|叔父|Ooms|Uncles|Wujkowie|Tios|Unchi|Дяди|Farbröder|Sedät|叔叔|Унцлес|叔叔|‏الأعمام‎|Oncles|Uncles|‏דודים‎|Paman|Tēvočus|Dėdės|Strýčkové|Strici|Дядька|Uncles"""
+label['lbl_unclesandaunt'] = """Nagybátyák és Nagynéne|Чичо и леля|Strýcové a teta|Onkler og tante|Onkel und Tante|Θείους και Θεία|Uncles and Aunt|Tíos y la tía|Oncles et sa tante|삼촌과 숙모|चाचा और चाची|Uncles i tete|Zii e zia|叔父と叔母|Ooms en tante|Uncles og tante|Wujkowie i Ciotka|Tios e Tia|Unchi si matusa|Тетя и дядя|Farbröder och faster|Sedät ja täti|叔叔和阿姨|Унцлес и тете|叔叔和阿姨|‏والعم والعمة‎|Oncles i la tia|Uncles at tiyahin|‏דודים ו דודה‎|Paman dan Aunt|Tēvočus un tanti|Dėdės ir teta|Strýkovia a teta|Strici in tete|Тітка і дядько|Uncles và aunt"""
+label['lbl_unclesandaunts'] = """Nagybátyák és Nagynénék|Чичовци и Aunts|Tety a strýčkové|Onkler og tanter|Onkel und Tanten|Θείους και θείες|Uncles and Aunts|Tíos y tías|Oncles et tantes|삼촌과 숙모|चाचा और चाची|Uncles i tete|Zii e zie|叔父と叔母|Ooms en tantes|Uncles og tanter|Wujkowie i ciotkom|Tios e tias|Şi unchi matusi|Дяди и тети|Morbröder och mostrar|Sedät ja tädit|叔叔和姑姑|Унцлес и тете|叔叔和姑姑|‏الأعمام والعمات‎|Oncles i tietes|Uncles at Aunts|‏דודים ו Aunts‎|Paman dan bibi|Tēvočus un tantes|Dėdės ir tetas|Tety a strýčkové|Strici in tête|Дядьки та тітки|Uncles và Aunts"""
+label['lbl_wife'] = """Feleség|Съпруга|Manželka|Kone|Ehefrau|Σύζυγος|Wife|Esposa|Épouse|아내|पत्नी|Supruga|Moglie|妻|Echtgenote|Kone|Żona|Esposa|Soţie|Жена|Hustru|Vaimo|妻子|Супруга|妻子|‏زوجة‎|Esposa|Asawang babae|‏אישה‎|Istri|Sieva|Žmona|Manželka|Žena|Дружина|Vợ"""
+label['sec_events'] = """Események|Събития|Události|Events|Veranstaltungen|Εκδηλώσεις|Events|Eventos|Evénements|이벤트|घटनाएँ|Događanja|Eventi|イベント|Evenementen|Arrangementer|Wydarzenia|Eventos|Evenimente|События|Evenemang|Tapahtumat|活动|Догађања|活動|‏الأحداث‎|Esdeveniments|Mga kaganapan|‏אירועים‎|Acara|Notikumi|Renginiai|Udalosti|Dogodki|Події|Sự kiện"""
+label['sec_families'] = """Családok|Семейства|Rodiny|Familier|Familien|Οικογένειες|Families|Familias|Familles|가족|परिवारों|Obitelji|Famiglie|家族|Families|Familier|Rodziny|Famílias|Familii|Семьи|Familjer|Families|家庭|Породице|家庭|‏الأسر‎|Famílies|Pamilya|‏משפחות‎|Keluarga|Ģimenes|Šeima|Rodiny|Družine|Сім'ї|Gia đình"""
+label['sec_gallery'] = """Fotóalbum|Галерия|Galerie|Galleri|Galerie|Gallery|Gallery|Galería|Galerie|갤러리|गैलरी|Galerija|Galleria|ギャラリー|Galerij|Galleri|Galeria|Galeria|Galerie|Галерея|Galleri|Galleria|画廊|Галерија|畫廊|‏معرض‎|Galeria|Gallery|‏גלריה‎|Galeri|Galerija|Galerija|Galéria|Galerija|Галерея|Thư viện ảnh"""
+label['sec_persons'] = """Személyek|Лица|Osoby|Personer|Personen|Πρόσωπα|Persons|Personas|Personnes|인|व्यक्तियों|Osobe|Persone|人|Personen|Personer|Osób|Pessoas|Persoane|Человек|Personer|Henkilöt|人|Лица|人|‏الأشخاص‎|Persones|Tao|‏אנשים‎|Orang|Personām,|Asmenys|Osoby|Osebe|Людина|Người"""
+label['sec_places'] = """Helyek|Места|Místa|Steder|Orte|Χώροι|Places|Lugares|Lieux|장소|Places|Mjesta|Luoghi|場所|Plaatsen|Steder|Miejsca|Places|Locuri|Места|Platser|Paikat|邻居|Места|鄰居|‏الأماكن‎|Llocs|Places|‏המקומות‎|Tempat|Vietas|Lankytinos vietos|Miesta|Kraji|Місця|Nơi"""
+label['sec_sources'] = """Források|Източници|Zdroje|Kilder|Quellen|Πηγές|Sources|Fuentes|Sources|출처|सूत्रों का कहना है|Izvori|Fonti|ソース|Bronnen|Kilder|Źródła|Fontes|Surse|Источники|Källor|Lähteet|来源|Извори|來源|‏المصادر‎|Fonts|Pinagkukunan|‏מקורות‎|Sumber|Avoti|Šaltiniai|Zdroje|Viri|Джерела|Nguồn"""
 
 # attached files
 
